@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/album/">
 
     <!-- Bootstrap core CSS -->
-<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
     <style>
       .bd-placeholder-img {
@@ -72,25 +72,43 @@
       <h1>Bibliothèque en ligne</h1>
       <p class="lead text-muted">Ce site répertorie des oeuvres littéraires de tous les horizons, des lecteurs passionés et avides de bouquins, ainsi que leurs appréciations.</p>
       <p>
-        <a href="#" class="btn btn-primary my-2">Liste des ouvrages</a>
+        <a href="#" class="btn btn-primary my-2">Accueil</a>
         <a href="#" class="btn btn-secondary my-2">Ajouter un ouvrage</a>
       </p>
     </div>
   </section>
 <?php
+  include 'functions.php';
+  $informationBooks = array();
+  $informationAuthors = array();
+  $idPrefix="id";
+
   try {
-    $con= new PDO('mysql:host=localhost;dbname=hybride', "root", "root");
+    $con= new PDO('mysql:host=localhost;dbname=book', "root", "root");
     $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $query = "SELECT * FROM livres";
-    $data = $con->query($query);
-    $data->setFetchMode(PDO::FETCH_ASSOC);
+    $queryBook = "SELECT * FROM t_book";
+    $dataBook = $con->query($queryBook);
+    $dataBook->setFetchMode(PDO::FETCH_ASSOC);
+    $queryAuthor = "SELECT * FROM t_author";
+    $dataAuthor = $con->query($queryAuthor);
+    $dataAuthor->setFetchMode(PDO::FETCH_ASSOC);
   } catch(PDOException $e) {
     echo 'ERROR: ' . $e->getMessage();
   }
-  $idPrefix="id";
-  foreach($data as $details)
+
+  foreach($dataBook as $details)
   {
-    echo '<div class="modal fade" id="'. $details["id"] .'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    $informationBooks[] = $details;
+  }
+  foreach($dataAuthor as $details)
+  {
+    $informationAuthors[] = $details;
+  }
+
+  foreach($informationBooks as $details)
+  {
+    $name = "id" . $details["idBook"] . ".jpg";
+    echo '<div class="modal fade" id="'. ($idPrefix . $details["idBook"]) .'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -99,12 +117,16 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="modal-body">';
-          
-    echo       '</div>
+                <div class="modal-body">
+                  <img src="../Images/' . $name . '" alt="" width=100% height=300>
+                  <p class="card-text"> Titre : ' . $details["booTitle"] .'</p>
+                  <p class="card-text"> Auteur : ' . findAutName($informationAuthors,$details["idAuthor"]) . '</p>
+                  <p class="card-text"> Année : ' . $details["booYearEdited"] . '</p>
+                  <p class="card-text"> Nombre de pages : ' . $details["booNbrPages"] . '</p>
+                  <p class="card-text"> Résumé : ' . $details["booSummary"] . '</p>
+                </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
               </div>
             </div>
@@ -116,27 +138,20 @@
 
       <div class="row">
         <?php
-          try {
-            $query = "SELECT * FROM livres";
-            $data = $con->query($query);
-            $data->setFetchMode(PDO::FETCH_ASSOC);
-          } catch(PDOException $e) {
-            echo 'ERROR: ' . $e->getMessage();
-          } // end try
-          foreach($data as $details)
+          foreach($informationBooks as $details)
           {
-            $name = $details["titre"] . ".jpg";
+            $name = "id" . $details["idBook"] . ".jpg";
             echo '<div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
-                      <img src="' . $name . '" alt="">
+                      <img src="../Images/' . $name . '" alt="" width=100% height=300>
                       <div class="card-body">
-                        <p class="card-text"> Titre : ' . $details["titre"] .'</p>
-                        <p class="card-text"> Auteur : ' . $details["auteur"] . '</p>
+                        <p class="card-text"> Titre : ' . $details["booTitle"] .'</p>
+                        <p class="card-text"> Auteur : ' . findAutName($informationAuthors,$details["idAuthor"]) .'</p>
+                        <p class="card-text"> Année : ' . $details["booYearEdited"] . '</p>
                         <div class="d-flex justify-content-between align-items-center">
                           <div class="btn-group">
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . $details["id"] . '">Details</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Details ouvrage</button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#' . ($idPrefix . $details["idBook"]) . '">Details ouvrage</button>
                           </div>
                           <small class="text-muted">9 mins</small>
                         </div>
@@ -145,22 +160,6 @@
                   </div>';
           }
         ?>
-
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-muted">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -177,5 +176,6 @@
   </div>
 </footer>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-      <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </html>
