@@ -1,6 +1,3 @@
-<?php
-include 'Database.php';
-?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -34,7 +31,7 @@ include 'Database.php';
     </p>
     <p>
         <label for="numberPages">Number of pages : </label>
-        <input type="number" id="numberPages" name="numberPages" min="0">
+        <input type="number" id="numberPages" name="numberPages" min="1">
     </p>
     <p>
         <label for="authorName">Author's name : </label>
@@ -53,10 +50,6 @@ include 'Database.php';
         <input type="number" id="year" name="year" max="2020">
     </p>
     <p>
-        <label for="averageAppreciation">Average Appreciation : </label>
-        <input type="number" min="1" max="5" step="0.1" id="averageAppreciation" name="averageAppreciation" value="AverageAppreciation">
-    </p>
-    <p>
         <label for="picture">Picture :</label>
         <input type="file" name="picture" id="picture">
     </p>
@@ -66,8 +59,7 @@ include 'Database.php';
     </p>
     <p>
         <label for="summary">Summary : </label>
-        <textarea id="summary" name="summary" rows="4" cols="50" maxlength="200" placeholder="Write a short summary for the book">
-        </textarea>
+        <textarea id="summary" name="summary" rows="4" cols="50" maxlength="200" placeholder="Write a short summary for the book"></textarea>
     </p>
     <p>
         <input type="submit" name="btnSubmit" value="Add book" />
