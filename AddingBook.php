@@ -10,7 +10,7 @@ $username = 'root';
 $password = 'root';
 
 $sql = connect($servername, $username, $password);
-if (userExistsAt($sql, $username) > 0) {
+if (userExistsAt($sql, $username) < 0) {
     addUser($sql, $username, $password);
     echo "created user root";
 } else {
@@ -32,8 +32,6 @@ if (isset($_POST['title']) && !empty($_POST['title'])
     && isset($_FILES['picture']) && preg_match($patternPictures, $_FILES['picture']["name"])
     && isset($_FILES['excerpt']) && preg_match($patternExcerpt, $_FILES['excerpt']["name"])) {
 
-    $sql = connect('localhost', 'root', 'root');
-
     $idAuthor = authorExistsAt($sql, $_POST['authorName'], $_POST['authorSurname']);
     if ($idAuthor < 0) {
         $idAuthor = addAuthor($sql, $_POST['authorName'], $_POST['authorSurname']);
@@ -54,10 +52,12 @@ if (isset($_POST['title']) && !empty($_POST['title'])
     move_uploaded_file($sourcePic, $destinationPic);
     move_uploaded_file($sourceExcerpt, $destinationExcerpt);
 
-    //todo add id user properly
-    addBook($sql, htmlspecialchars($_POST['title']), $_POST['numberPages'], htmlspecialchars($destinationExcerpt), htmlspecialchars($_POST['summary']), $_POST['year'], htmlspecialchars($destinationPic), $idAuthor, 0, $idEditor, $idCategory);
+    //todo add idUser of user logged in
+    $idUser = 1;
+    addBook($sql, htmlspecialchars($_POST['title']), $_POST['numberPages'], htmlspecialchars($destinationExcerpt), htmlspecialchars($_POST['summary']), $_POST['year'], htmlspecialchars($destinationPic), $idAuthor, $idUser, $idEditor, $idCategory);
 
 } else {
-    echo "something wrong happened please go back";
-    echo "failed";
+    //todo header location for cleaner way to go back
+    echo "something wwong happened pwease go back";
+    echo "faiwed";
 }

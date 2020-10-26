@@ -34,6 +34,8 @@ function mergeStrings($strings): string
     return $stringsAsString . ')';
 }
 
+//todo create Read functions : (string table) : tableau avec toutes données
+
 #region ExistsAt functions
 
 /**
@@ -46,13 +48,12 @@ function mergeStrings($strings): string
  */
 function dataExistsAt($sql, $value, $table, $column): int
 {
-    $query = $sql->prepare("select " . $column . " from " . $table);
+    $query = $sql->prepare("select * from " . $table);
     $query->execute();
 
-    $i = -1;
-    while ($row = $query->fetch(PDO::FETCH_ASSOC, $i++)) {
+    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
         if ($row[$column] == $value) {
-            return $i;
+            return (int) $row["id" . ucfirst(substr($table, 2, strlen($table)))];
         }
     }
     return -1;
@@ -74,18 +75,16 @@ function userExistsAt($sql, $username): int
  * @param PDO $sql
  * @param string $name
  * @param string $surname
- * @return bool
+ * @return int less than 0 if author does not exist, id otherwise
  */
 function authorExistsAt($sql, $name, $surname): int
 {
-    //TODO test fix for existsat
-    $query = $sql->prepare("select autName, autSurname from t_author");
+    $query = $sql->prepare("select * from t_author");
     $query->execute();
 
-    $i = -1;
-    while ($row = $query->fetch(PDO::FETCH_ASSOC, $i++)) {
+    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
         if (($row['autName'] == $name) && ($row['autSurname'] == $surname)) {
-            return $i;
+            return (int) $row["idAuthor"];
         }
     }
     return -1;
@@ -123,12 +122,15 @@ function categoryExistsAt($sql, $name): int
  * @param string $table
  * @param string[] $columns
  * @param string[] $values
+ * @return int id
  */
 function addData($sql, $table, $columns, $values): int
 {
+    echo "$table " . var_dump($columns)  . " " . var_dump($values);
     $sql->query("insert into " . $table . " " . mergeStrings($columns) . " values " . mergeStrings($values));
-    //$sql = mysqli_query("select * from " . $table);
-    return 0;
+    $id = "id" . ucfirst(substr($table, 2, strlen($table)));
+    $sth = $sql->query("select max($id) from " . $table);
+    return (int) $sth->fetch(PDO::FETCH_ASSOC)["max($id)"];
 }
 
 /**
