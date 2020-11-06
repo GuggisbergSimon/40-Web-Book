@@ -2,11 +2,8 @@
 include 'Database.php';
 
 //Example of a code to create a basic user root - root for data manipulation
-/** @var string $servername */
 $servername = 'localhost';
-/** @var string $username */
 $username = 'root';
-/** @var string $password */
 $password = 'root';
 
 $sql = connect($servername, $username, $password);
@@ -47,17 +44,16 @@ if (isset($_POST['title']) && !empty($_POST['title'])
 
     $sourcePic = $_FILES['picture']['tmp_name'];
     $sourceExcerpt = $_FILES['excerpt']['tmp_name'];
-    $destinationPic = "Images/" . date("YmdHis") . $_FILES["picture"]["name"];
-    $destinationExcerpt = "Documents/" . date("YmdHis") . $_FILES["excerpt"]["name"];
-    move_uploaded_file($sourcePic, $destinationPic);
-    move_uploaded_file($sourceExcerpt, $destinationExcerpt);
+    $destinationPic = date("YmdHis") . $_FILES["picture"]["name"];
+    $destinationExcerpt = date("YmdHis") . $_FILES["excerpt"]["name"];
+    move_uploaded_file($sourcePic, "Images/" . $destinationPic);
+    move_uploaded_file($sourceExcerpt, "Documents/" . $destinationExcerpt);
 
     //todo add idUser of user logged in
     $idUser = 1;
     addBook($sql, htmlspecialchars($_POST['title']), $_POST['numberPages'], htmlspecialchars($destinationExcerpt), htmlspecialchars($_POST['summary']), $_POST['year'], htmlspecialchars($destinationPic), $idAuthor, $idUser, $idEditor, $idCategory);
 
 } else {
-    //todo header location for cleaner way to go back
-    echo "something wwong happened pwease go back";
-    echo "faiwed";
+    //todo put a correct header and a message uwu
+    header("Location : https://www.youtube.com/watch?v=dQw4w9WgXcQ");
 }
