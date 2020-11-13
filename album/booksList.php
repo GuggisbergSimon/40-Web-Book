@@ -1,3 +1,9 @@
+<?php
+  include 'functions.php';
+  include 'Database.php';
+  session_start();
+  $sql = connect("localhost","root","root");
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -29,7 +35,7 @@
   <div class="navbar navbar-dark bg-dark shadow-sm">
     <div class="container d-flex justify-content-between">
       <a href="#" class="navbar-brand d-flex align-items-center">
-        <strong>Liste des ouvrages</strong>
+        <strong><h1>Liste des ouvrages</h1></strong>
       </a>
       <form>
         <div class="form-group" >
@@ -52,18 +58,14 @@
       <p class="lead text-muted">Ce site répertorie des oeuvres littéraires de tous les horizons, des lecteurs passionés et avides de bouquins, ainsi que leurs appréciations.</p>
       <p>
         <a href="home.php" class="btn btn-primary my-2">Accueil</a>
-        <a href="#" class="btn btn-secondary my-2">Ajouter un ouvrage</a>
+        <a href="../AddBook.php" class="btn btn-secondary my-2">Ajouter un ouvrage</a>
       </p>
     </div>
   </section>
 <?php
-  include 'functions.php';
-
-  $sql = connect();
 
   foreach(readTable($sql,"t_book") as $details)
   {
-    $name = $details["idBook"] . ".jpg";
     echo '<div class="modal fade" id="id'. $details["idBook"] .'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -74,7 +76,7 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <img src="../Images/' . $name . '" alt="" width=100% height=300 >
+                  <img src="../Images/' . $details["booCoverLink"] . '" alt="" width=100% height=300 >
                   <p class="card-text"> <strong>Titre</strong> : ' . $details["booTitle"] .'</p>
                   <p class="card-text"> <strong>Auteur</strong> : ' . findAutName(readTable($sql,"t_author"),$details["idAuthor"]) . '</p>
                   <p class="card-text"> <strong>Année</strong> : ' . $details["booYearEdited"] . '</p>
@@ -98,7 +100,7 @@
             $name = $details["idBook"] . ".jpg";
             echo '<div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
-                      <img src="../Images/' . $name . '" alt="" width=100% height=300>
+                      <img src="../Images/' . $details["booCoverLink"]. '" alt="" width=100% height=300>
                       <div class="card-body">
                         <p class="card-text"> <strong>Titre</strong> : ' . $details["booTitle"] .'</p>
                         <p class="card-text"> <strong>Auteur</strong> : ' . findAutName(readTable($sql,"t_author"),$details["idAuthor"]) .'</p>

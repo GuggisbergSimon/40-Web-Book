@@ -1,21 +1,21 @@
 <?php
-function findAutName(array $tab, int $index): string 
+/**
+ * Concatenation of author's name and surname
+ * @param string $table
+ * @param int $index
+ * @return string
+ */
+function findAutName(array $table, int $index): string 
 {
-    return $tab[$index - 1]["autName"] . " " . $tab[$index - 1]["autSurname"];
+    return $table[$index - 1]["autName"] . " " . $table[$index - 1]["autSurname"];
 }
 
-function connect()
-{
-    try {
-        $con= new PDO('mysql:host=localhost;dbname=book', "root", "root");
-        $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $con;
-      } catch(PDOException $e) {
-        echo 'ERROR: ' . $e->getMessage();
-        return $e;
-      }
-}
-
+/**
+ * Read a table and return an array with table's informations
+ * @param string $tableName
+ * @param string $sql
+ * @return array 
+ */
 function readTable($sql, string $tableName): array 
 {
     $query = "SELECT * FROM " . $tableName;

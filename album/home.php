@@ -1,3 +1,9 @@
+<?php
+  include 'functions.php';
+  include 'Database.php';
+  session_start();
+  $sql = connect("localhost","root","root");
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -18,39 +24,45 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
 
-span:hover {
-  color: red;
-}    
+    span:hover {
+      color: red;
+    }    
 
-span:visited {
-  color: purple;
-}  
+    span:visited {
+      color: purple;
+    }  
 
-.checked {
-  color: orange;
-}
-</style>
-
+    .checked {
+      color: orange;
+    }
+    </style>
   </head>
   <body>
     <header>
   <div class="navbar navbar-dark bg-dark shadow-sm">
     <div class="container d-flex justify-content-between">
       <a href="#" class="navbar-brand d-flex align-items-center">
-        <strong>Accueil</strong>
+        <strong><h1>Accueil</h1></strong>
       </a>
-      <form>
+      <form method="post">
         <div class="form-group" >
           <input type="text" class="form-control" id="username" aria-describedby="userHelp" placeholder="Username">
         </div>
         <div class="form-group">
           <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
         </div>
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" name="login" class="btn btn-primary">Login</button>
       </form>
     </div>
   </div>
 </header>
+
+<?php
+  if(isset($_POST["login"]))
+  {
+    $_SESSION["isConnected"] = 1;
+  }
+?>
 
 <main role="main">
 
@@ -60,18 +72,18 @@ span:visited {
       <p class="lead text-muted">Ce site répertorie des oeuvres littéraires de tous les horizons, des lecteurs passionés et avides de bouquins, ainsi que leurs appréciations.</p>
       <p>
         <a href="booksList.php" class="btn btn-primary my-2">Liste des ouvrages</a>
-        <a href="#" class="btn btn-secondary my-2">Ajouter un ouvrage</a>
+        <?php
+        if(TRUE) //preg_match('/^1{1,1}$/',$_SESSION["isConnected"]
+        {
+          echo '<a href="AddBook.php" class="btn btn-secondary my-2">Ajouter un ouvrage</a>';
+        }
+        ?>
       </p>
     </div>
   </section>
 <?php
-  include 'functions.php';
-
-  $sql = connect();
-
   foreach(readTable($sql,"t_book") as $details)
   {
-    $name = $details["idBook"] . ".jpg";
     echo '<div class="modal fade" id="id'. $details["idBook"] .'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -82,7 +94,7 @@ span:visited {
                   </button>
                 </div>
                 <div class="modal-body">
-                  <img src="../Images/' . $name . '" alt="" width=100% height=300>
+                  <img src="../Images/' . $details["booCoverLink"] . '" alt="" width=100% height=300>
                   <p class="card-text"> Titre : ' . $details["booTitle"] .'</p>
                   <p class="card-text"> Auteur : ' . findAutName(readTable($sql,"t_author"), $details["idAuthor"]) . '</p>
                   <p class="card-text"> Année : ' . $details["booYearEdited"] . '</p>
@@ -111,9 +123,9 @@ span:visited {
     <div class="container">
       <div class="row">
         <?php
-          for($i=0; $i < 5;$i++)
+          for($i=0; $i < 5;$i++) // TODO : remplacer par LIMIT 5 dans sql
           {
-            $name = readTable($sql,"t_book")[$i]["idBook"] . ".jpg";
+            $name = readTable($sql,"t_book")[$i]["booCoverLink"];
             echo '<div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
                       <img src="../Images/' . $name . '" alt="" width=100% height=300>
