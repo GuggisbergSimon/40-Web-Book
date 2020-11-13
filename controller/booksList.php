@@ -1,8 +1,15 @@
 <?php
+
+/**
+ * Authors : Julien Leresche & Simon Guggisberg
+ * Date : 02.11.2020
+ * Description : TODO
+ */
+
   include 'functions.php';
   include '../model/database.php';
   session_start();
-  $sql = connect("localhost","root","root");
+  $database = new Database();
 ?>
 <!doctype html>
 <html lang="en">
@@ -64,7 +71,7 @@
   </section>
 <?php
 
-  foreach(readTable($sql,"t_book") as $details)
+  foreach($database->readTable("t_book") as $details)
   {
     echo '<div class="modal fade" id="id'. $details["idBook"] .'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -78,7 +85,7 @@
                 <div class="modal-body">
                   <img src="../userContent/images/' . $details["booCoverLink"] . '" alt="" width=100% height=300 >
                   <p class="card-text"> <strong>Titre</strong> : ' . $details["booTitle"] .'</p>
-                  <p class="card-text"> <strong>Auteur</strong> : ' . findAutName(readTable($sql,"t_author"),$details["idAuthor"]) . '</p>
+                  <p class="card-text"> <strong>Auteur</strong> : ' . findAutName($database->readTable("t_author"),$details["idAuthor"]) . '</p>
                   <p class="card-text"> <strong>Année</strong> : ' . $details["booYearEdited"] . '</p>
                   <p class="card-text"> <strong>Nombre de pages</strong> : ' . $details["booNbrPages"] . '</p>
                   <p class="card-text"> <strong>Résumé</strong> : ' . $details["booSummary"] . '</p>
@@ -95,7 +102,7 @@
     <div class="container">
       <div class="row">
         <?php
-          foreach(readTable($sql,"t_book") as $details)
+          foreach($database->readTable("t_book") as $details)
           {
             $name = $details["idBook"] . ".jpg";
             echo '<div class="col-md-4">
@@ -103,7 +110,7 @@
                       <img src="../userContent/images/' . $details["booCoverLink"]. '" alt="" width=100% height=300>
                       <div class="card-body">
                         <p class="card-text"> <strong>Titre</strong> : ' . $details["booTitle"] .'</p>
-                        <p class="card-text"> <strong>Auteur</strong> : ' . findAutName(readTable($sql,"t_author"),$details["idAuthor"]) .'</p>
+                        <p class="card-text"> <strong>Auteur</strong> : ' . findAutName($database->readTable("t_author"),$details["idAuthor"]) .'</p>
                         <p class="card-text"> <strong>Année</strong> : ' . $details["booYearEdited"] . '</p>
                         <div class="d-flex justify-content-between align-items-center">
                           <div class="btn-group">

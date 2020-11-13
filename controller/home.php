@@ -2,7 +2,7 @@
   include 'functions.php';
   include '../model/database.php';
   session_start();
-  $sql = connect("localhost","root","root");
+  $database = new Database();
 ?>
 <!doctype html>
 <html lang="en">
@@ -82,7 +82,7 @@
     </div>
   </section>
 <?php
-  foreach(readTable($sql,"t_book") as $details)
+  foreach($database->readTable("t_book") as $details)
   {
     echo '<div class="modal fade" id="id'. $details["idBook"] .'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -96,7 +96,7 @@
                 <div class="modal-body">
                   <img src="../userContent/images/' . $details["booCoverLink"] . '" alt="" width=100% height=300>
                   <p class="card-text"> Titre : ' . $details["booTitle"] .'</p>
-                  <p class="card-text"> Auteur : ' . findAutName(readTable($sql,"t_author"), $details["idAuthor"]) . '</p>
+                  <p class="card-text"> Auteur : ' . findAutName($database->readTable("t_author"), $details["idAuthor"]) . '</p>
                   <p class="card-text"> Année : ' . $details["booYearEdited"] . '</p>
                   <p class="card-text"> Nombre de pages : ' . $details["booNbrPages"] . '</p>
                   <p class="card-text"> Résumé : ' . $details["booSummary"] . '</p>
@@ -125,18 +125,18 @@
         <?php
           for($i=0; $i < 5;$i++) // TODO : remplacer par LIMIT 5 dans sql
           {
-            $name = readTable($sql,"t_book")[$i]["booCoverLink"];
+            $name = $database->readTable("t_book")[$i]["booCoverLink"];
             echo '<div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
                       <img src="../userContent/images/' . $name . '" alt="" width=100% height=300>
                       <div class="card-body">
-                        <p class="card-text"> Titre : ' . readTable($sql,"t_book")[$i]["booTitle"] .'</p>
-                        <p class="card-text"> Auteur : ' . findAutName(readTable($sql,"t_author"), readTable($sql,"t_book")[$i]["idAuthor"]) .'</p>
-                        <p class="card-text"> Année : ' . readTable($sql,"t_book")[$i]["booYearEdited"] . '</p>
+                        <p class="card-text"> Titre : ' . $database->readTable("t_book")[$i]["booTitle"] .'</p>
+                        <p class="card-text"> Auteur : ' . findAutName($database->readTable("t_author"), $database->readTable("t_book")[$i]["idAuthor"]) .'</p>
+                        <p class="card-text"> Année : ' . $database->readTable("t_book")[$i]["booYearEdited"] . '</p>
                         <div class="d-flex justify-content-between align-items-center">
                           <div class="btn-group">
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#id' . readTable($sql,"t_book")[$i]["idBook"] . '">Details ouvrage</button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#id' . $database->readTable("t_book")[$i]["idBook"] . '">Details ouvrage</button>
                           </div>
                           <small class="text-muted">9 mins</small>
                         </div>
