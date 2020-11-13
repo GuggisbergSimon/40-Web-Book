@@ -62,24 +62,15 @@ class Database
      */
     function readTable(string $tableName): array
     {
-
         $results = $this->querySimpleExecute('select * from ' . $tableName);
         $results = $this->formatData($results);
-
-        foreach($results as $result)
-        {
-            $informations[] = $result;
-        }
-        return $informations;
+        return $results;
     }
-
-//todo create Read functions : (string table) : tableau avec toutes données
 
 #region ExistsAt functions
 
     /**
      * Checks wether the specified data exists, returns a negative value if the data does not exist, the id otherwise
-     * @param PDO $sql
      * @param mixed $value
      * @param string $table
      * @param string $column
@@ -100,9 +91,8 @@ class Database
 
     /**
      * Checks wether the specified user exists
-     * @param PDO $sql
      * @param string $username
-     * @return bool
+     * @return int
      */
     function userExistsAt($username): int
     {
@@ -111,7 +101,6 @@ class Database
 
     /**
      * Checks wether the specified author exists, returns a negative value if the author does not exist, the id otherwise
-     * @param PDO $sql
      * @param string $name
      * @param string $surname
      * @return int
@@ -131,9 +120,8 @@ class Database
 
     /**
      * Checks wether the specified editor exists
-     * @param PDO $sql
      * @param string $name
-     * @return bool
+     * @return int
      */
     function editorExistsAt($name): int
     {
@@ -142,9 +130,8 @@ class Database
 
     /**
      * Checks wether the specified category exists
-     * @param PDO $sql
      * @param string $name
-     * @return bool
+     * @return int
      */
     function categoryExistsAt($name): int
     {
@@ -157,7 +144,6 @@ class Database
 
     /**
      * Adds some data to the database
-     * @param PDO $sql
      * @param string $table
      * @param string[] $columns
      * @param string[] $values
@@ -170,12 +156,12 @@ class Database
         $id = 'id' . ucfirst(substr($table, 2, strlen($table)));
         $this->querySimpleExecute('insert into ' . $table . ' ' . $this->mergeStrings($columns) . ' values ' . $this->mergeStrings($values));
         $results = $this->querySimpleExecute("select max($id) from " . $table);
-        return (int)$this->formatData($results)["max($id)"];
+        $results = $this->formatData($results);
+        return (int)($results[0]["max($id)"]);
     }
 
     /**
      * Adds an user to the database
-     * @param PDO $sql
      * @param string $username
      * @param string $password
      */
@@ -186,9 +172,9 @@ class Database
 
     /**
      * Adds an author to the database
-     * @param PDO $sql
      * @param string $name
      * @param string $surname
+     * @return int
      */
     function addAuthor($name, $surname): int
     {
@@ -197,8 +183,8 @@ class Database
 
     /**
      * Adds an editor to the database
-     * @param PDO $sql
      * @param string $name
+     * @return int
      */
     function addEditor($name): int
     {
@@ -207,8 +193,8 @@ class Database
 
     /**
      * Adds a category to the database
-     * @param PDO $sql
      * @param string $name
+     * @return int
      */
     function addCategory($name): int
     {
@@ -217,7 +203,6 @@ class Database
 
     /**
      * Adds a book to the database with its foreign keys
-     * @param PDO $sql
      * @param string $title
      * @param int $numberPages
      * @param string $excerptLink

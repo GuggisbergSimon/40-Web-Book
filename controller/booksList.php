@@ -7,7 +7,7 @@
  */
 
   include 'functions.php';
-  include 'database.php';
+  include '../model/database.php';
   session_start();
   $database = new Database();
 ?>
@@ -71,7 +71,7 @@
   </section>
 <?php
 
-  foreach(readTable("t_book") as $details)
+  foreach($database->readTable("t_book") as $details)
   {
     echo '<div class="modal fade" id="id'. $details["idBook"] .'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -83,7 +83,7 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <img src="../images/' . $details["booCoverLink"] . '" alt="" width=100% height=300 >
+                  <img src="../userContent/images/' . $details["booCoverLink"] . '" alt="" width=100% height=300 >
                   <p class="card-text"> <strong>Titre</strong> : ' . $details["booTitle"] .'</p>
                   <p class="card-text"> <strong>Auteur</strong> : ' . findAutName($database->readTable("t_author"),$details["idAuthor"]) . '</p>
                   <p class="card-text"> <strong>Année</strong> : ' . $details["booYearEdited"] . '</p>
@@ -107,10 +107,10 @@
             $name = $details["idBook"] . ".jpg";
             echo '<div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
-                      <img src="../images/' . $details["booCoverLink"]. '" alt="" width=100% height=300>
+                      <img src="../userContent/images/' . $details["booCoverLink"]. '" alt="" width=100% height=300>
                       <div class="card-body">
                         <p class="card-text"> <strong>Titre</strong> : ' . $details["booTitle"] .'</p>
-                        <p class="card-text"> <strong>Auteur</strong> : ' . findAutName(readTable($sql,"t_author"),$details["idAuthor"]) .'</p>
+                        <p class="card-text"> <strong>Auteur</strong> : ' . findAutName($database->readTable("t_author"),$details["idAuthor"]) .'</p>
                         <p class="card-text"> <strong>Année</strong> : ' . $details["booYearEdited"] . '</p>
                         <div class="d-flex justify-content-between align-items-center">
                           <div class="btn-group">

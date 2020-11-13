@@ -1,6 +1,6 @@
 <?php
   include 'functions.php';
-  include 'database.php';
+  include '../model/database.php';
   session_start();
   $database = new Database();
 ?>
@@ -94,7 +94,7 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <img src="../images/' . $details["booCoverLink"] . '" alt="" width=100% height=300>
+                  <img src="../userContent/images/' . $details["booCoverLink"] . '" alt="" width=100% height=300>
                   <p class="card-text"> Titre : ' . $details["booTitle"] .'</p>
                   <p class="card-text"> Auteur : ' . findAutName($database->readTable("t_author"), $details["idAuthor"]) . '</p>
                   <p class="card-text"> Année : ' . $details["booYearEdited"] . '</p>
@@ -128,7 +128,7 @@
             $name = $database->readTable("t_book")[$i]["booCoverLink"];
             echo '<div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
-                      <img src="../images/' . $name . '" alt="" width=100% height=300>
+                      <img src="../userContent/images/' . $name . '" alt="" width=100% height=300>
                       <div class="card-body">
                         <p class="card-text"> Titre : ' . $database->readTable("t_book")[$i]["booTitle"] .'</p>
                         <p class="card-text"> Auteur : ' . findAutName($database->readTable("t_author"), $database->readTable("t_book")[$i]["idAuthor"]) .'</p>
