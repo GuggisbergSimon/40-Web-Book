@@ -58,7 +58,7 @@
       <p class="lead text-muted">Ce site répertorie des oeuvres littéraires de tous les horizons, des lecteurs passionés et avides de bouquins, ainsi que leurs appréciations.</p>
       <p>
         <a href="home.php" class="btn btn-primary my-2">Accueil</a>
-        <a href="../AddBook.php" class="btn btn-secondary my-2">Ajouter un ouvrage</a>
+        <a href="AddBook.php" class="btn btn-secondary my-2">Ajouter un ouvrage</a>
       </p>
     </div>
   </section>
@@ -76,7 +76,7 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <img src="../Images/' . $details["booCoverLink"] . '" alt="" width=100% height=300 >
+                  <img src="../images/' . $details["booCoverLink"] . '" alt="" width=100% height=300 >
                   <p class="card-text"> <strong>Titre</strong> : ' . $details["booTitle"] .'</p>
                   <p class="card-text"> <strong>Auteur</strong> : ' . findAutName(readTable($sql,"t_author"),$details["idAuthor"]) . '</p>
                   <p class="card-text"> <strong>Année</strong> : ' . $details["booYearEdited"] . '</p>
@@ -100,7 +100,7 @@
             $name = $details["idBook"] . ".jpg";
             echo '<div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
-                      <img src="../Images/' . $details["booCoverLink"]. '" alt="" width=100% height=300>
+                      <img src="../images/' . $details["booCoverLink"]. '" alt="" width=100% height=300>
                       <div class="card-body">
                         <p class="card-text"> <strong>Titre</strong> : ' . $details["booTitle"] .'</p>
                         <p class="card-text"> <strong>Auteur</strong> : ' . findAutName(readTable($sql,"t_author"),$details["idAuthor"]) .'</p>
@@ -133,4 +133,5 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</body>
 </html>

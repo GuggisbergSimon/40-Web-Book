@@ -94,7 +94,7 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <img src="../Images/' . $details["booCoverLink"] . '" alt="" width=100% height=300>
+                  <img src="../images/' . $details["booCoverLink"] . '" alt="" width=100% height=300>
                   <p class="card-text"> Titre : ' . $details["booTitle"] .'</p>
                   <p class="card-text"> Auteur : ' . findAutName(readTable($sql,"t_author"), $details["idAuthor"]) . '</p>
                   <p class="card-text"> Année : ' . $details["booYearEdited"] . '</p>
@@ -128,7 +128,7 @@
             $name = readTable($sql,"t_book")[$i]["booCoverLink"];
             echo '<div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
-                      <img src="../Images/' . $name . '" alt="" width=100% height=300>
+                      <img src="../images/' . $name . '" alt="" width=100% height=300>
                       <div class="card-body">
                         <p class="card-text"> Titre : ' . readTable($sql,"t_book")[$i]["booTitle"] .'</p>
                         <p class="card-text"> Auteur : ' . findAutName(readTable($sql,"t_author"), readTable($sql,"t_book")[$i]["idAuthor"]) .'</p>
@@ -161,5 +161,5 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-
+</body>
 </html>

@@ -46,8 +46,8 @@ if (isset($_POST['title']) && !empty($_POST['title'])
     $sourceExcerpt = $_FILES['excerpt']['tmp_name'];
     $destinationPic = date("YmdHis") . $_FILES["picture"]["name"];
     $destinationExcerpt = date("YmdHis") . $_FILES["excerpt"]["name"];
-    move_uploaded_file($sourcePic, "Images/" . $destinationPic);
-    move_uploaded_file($sourceExcerpt, "Documents/" . $destinationExcerpt);
+    move_uploaded_file($sourcePic, "images/" . $destinationPic);
+    move_uploaded_file($sourceExcerpt, "documents/" . $destinationExcerpt);
 
     //todo add idUser of user logged in
     $idUser = 1;
