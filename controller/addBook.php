@@ -15,7 +15,7 @@
 <body>
 <!-- todo OPTIONAL make list of existing categories and choice to add new category, use list as input type (autocomplete)-->
 <h1>Add a book</h1>
-<form method="post" action="AddingBook.php" enctype="multipart/form-data">
+<form method="post" action="addingBook.php" enctype="multipart/form-data">
     <p>
         <label for="title">Title : </label>
         <input type="text" id="title" name="title">
