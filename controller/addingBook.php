@@ -1,14 +1,22 @@
 <?php
 include '../model/database.php';
 
+/**
+ * Authors : Julien Leresche & Simon Guggisberg
+ * Date : 02.11.2020
+ * Description : TODO
+ */
+
+include '../model/database.php';
+
 //Example of a code to create a basic user root - root for data manipulation
 $servername = 'localhost';
 $username = 'root';
 $password = 'root';
 
-$sql = connect($servername, $username, $password);
-if (userExistsAt($sql, $username) < 0) {
-    addUser($sql, $username, $password);
+$database = new Database();
+if ($database->userExistsAt($username) < 0) {
+    $database->addUser($username, $password);
     echo "created user root";
 } else {
     echo "user root already existing, creation aborted";
@@ -29,17 +37,17 @@ if (isset($_POST['title']) && !empty($_POST['title'])
     && isset($_FILES['picture']) && preg_match($patternPictures, $_FILES['picture']["name"])
     && isset($_FILES['excerpt']) && preg_match($patternExcerpt, $_FILES['excerpt']["name"])) {
 
-    $idAuthor = authorExistsAt($sql, $_POST['authorName'], $_POST['authorSurname']);
+    $idAuthor = $database->authorExistsAt($_POST['authorName'], $_POST['authorSurname']);
     if ($idAuthor < 0) {
-        $idAuthor = addAuthor($sql, $_POST['authorName'], $_POST['authorSurname']);
+        $idAuthor = $database->addAuthor($_POST['authorName'], $_POST['authorSurname']);
     }
-    $idEditor = editorExistsAt($sql, $_POST['editor']);
+    $idEditor = $database->editorExistsAt($_POST['editor']);
     if ($idEditor < 0) {
-        $idEditor = addEditor($sql, $_POST['editor']);
+        $idEditor = $database->addEditor($_POST['editor']);
     }
-    $idCategory = categoryExistsAt($sql, $_POST['category']);
+    $idCategory = $database->categoryExistsAt($_POST['category']);
     if ($idCategory < 0) {
-        $idCategory = addCategory($sql, $_POST['category']);
+        $idCategory = $database->addCategory($_POST['category']);
     }
 
     $sourcePic = $_FILES['picture']['tmp_name'];
@@ -51,7 +59,7 @@ if (isset($_POST['title']) && !empty($_POST['title'])
 
     //todo add idUser of user logged in
     $idUser = 1;
-    addBook($sql, htmlspecialchars($_POST['title']), $_POST['numberPages'], htmlspecialchars($destinationExcerpt), htmlspecialchars($_POST['summary']), $_POST['year'], htmlspecialchars($destinationPic), $idAuthor, $idUser, $idEditor, $idCategory);
+    $database->addBook(htmlspecialchars($_POST['title']), $_POST['numberPages'], htmlspecialchars($destinationExcerpt), htmlspecialchars($_POST['summary']), $_POST['year'], htmlspecialchars($destinationPic), $idAuthor, $idUser, $idEditor, $idCategory);
 
 } else {
     //todo put a correct header and a message uwu

@@ -2,7 +2,7 @@
   include 'functions.php';
   include '../model/database.php';
   session_start();
-  $sql = connect("localhost","root","root");
+  $database = new Database();
 ?>
 <!doctype html>
 <html lang="en">
@@ -44,15 +44,30 @@
       <a href="#" class="navbar-brand d-flex align-items-center">
         <strong><h1>Accueil</h1></strong>
       </a>
-      <form method="post">
-        <div class="form-group" >
-          <input type="text" class="form-control" id="username" aria-describedby="userHelp" placeholder="Username">
-        </div>
-        <div class="form-group">
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-        </div>
-        <button type="submit" name="login" class="btn btn-primary">Login</button>
-      </form>
+      <?php
+        if(isset($_SESSION["isConnected"]))
+        {
+          echo '<form method="post">
+                  <div class="form-group" >
+                  <label for="username">Connecté en tant que ' . $_SESSION["username"] . ' </label>
+                  </div>
+                  <button type="submit" name="logout" class="btn btn-primary">Logout</button>
+                </form>';
+        }
+        else
+        {
+          echo '<form method="post">
+                  <div class="form-group" >
+                    <input type="text" class="form-control" id="username" aria-describedby="userHelp" name="username" placeholder="Username">
+                  </div>
+                  <div class="form-group">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                  </div>
+                  <button type="submit" name="login" class="btn btn-primary">Login</button>
+                </form>';
+        }
+        ?>
+
     </div>
   </div>
 </header>
@@ -60,7 +75,18 @@
 <?php
   if(isset($_POST["login"]))
   {
-    $_SESSION["isConnected"] = 1;
+    foreach($database->readTable("t_user") as $user)
+    if($_POST["username"] == $user["usePseudo"] && $_POST["password"] == $user["usePassword"])
+    {
+      $_SESSION["isConnected"] = 1;
+      $_SESSION["username"] = $_POST["username"];
+      header("location: home.php");
+    }
+  } 
+  if(isset($_POST["logout"]))
+  {
+     session_destroy();
+     header("location: home.php");
   }
 ?>
 
@@ -73,7 +99,7 @@
       <p>
         <a href="booksList.php" class="btn btn-primary my-2">Liste des ouvrages</a>
         <?php
-        if(TRUE) //preg_match('/^1{1,1}$/',$_SESSION["isConnected"]
+        if(isset($_SESSION["isConnected"]))
         {
           echo '<a href="addBook.php" class="btn btn-secondary my-2">Ajouter un ouvrage</a>';
         }
@@ -82,7 +108,7 @@
     </div>
   </section>
 <?php
-  foreach(readTable($sql,"t_book") as $details)
+  foreach($database->readTable("t_book") as $details)
   {
     echo '<div class="modal fade" id="id'. $details["idBook"] .'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -96,7 +122,7 @@
                 <div class="modal-body">
                   <img src="../userContent/images/' . $details["booCoverLink"] . '" alt="" width=100% height=300>
                   <p class="card-text"> Titre : ' . $details["booTitle"] .'</p>
-                  <p class="card-text"> Auteur : ' . findAutName(readTable($sql,"t_author"), $details["idAuthor"]) . '</p>
+                  <p class="card-text"> Auteur : ' . findAutName($database->readTable("t_author"), $details["idAuthor"]) . '</p>
                   <p class="card-text"> Année : ' . $details["booYearEdited"] . '</p>
                   <p class="card-text"> Nombre de pages : ' . $details["booNbrPages"] . '</p>
                   <p class="card-text"> Résumé : ' . $details["booSummary"] . '</p>
@@ -125,18 +151,18 @@
         <?php
           for($i=0; $i < 5;$i++) // TODO : remplacer par LIMIT 5 dans sql
           {
-            $name = readTable($sql,"t_book")[$i]["booCoverLink"];
+            $name = $database->readTable("t_book")[$i]["booCoverLink"];
             echo '<div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
                       <img src="../userContent/images/' . $name . '" alt="" width=100% height=300>
                       <div class="card-body">
-                        <p class="card-text"> Titre : ' . readTable($sql,"t_book")[$i]["booTitle"] .'</p>
-                        <p class="card-text"> Auteur : ' . findAutName(readTable($sql,"t_author"), readTable($sql,"t_book")[$i]["idAuthor"]) .'</p>
-                        <p class="card-text"> Année : ' . readTable($sql,"t_book")[$i]["booYearEdited"] . '</p>
+                        <p class="card-text"> Titre : ' . $database->readTable("t_book")[$i]["booTitle"] .'</p>
+                        <p class="card-text"> Auteur : ' . findAutName($database->readTable("t_author"), $database->readTable("t_book")[$i]["idAuthor"]) .'</p>
+                        <p class="card-text"> Année : ' . $database->readTable("t_book")[$i]["booYearEdited"] . '</p>
                         <div class="d-flex justify-content-between align-items-center">
                           <div class="btn-group">
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#id' . readTable($sql,"t_book")[$i]["idBook"] . '">Details ouvrage</button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#id' . $database->readTable("t_book")[$i]["idBook"] . '">Details ouvrage</button>
                           </div>
                           <small class="text-muted">9 mins</small>
                         </div>
