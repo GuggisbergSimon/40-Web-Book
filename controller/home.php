@@ -1,6 +1,6 @@
 <?php
   include 'functions.php';
-  include 'Database.php';
+  include 'database.php';
   session_start();
   $sql = connect("localhost","root","root");
 ?>
@@ -75,7 +75,7 @@
         <?php
         if(TRUE) //preg_match('/^1{1,1}$/',$_SESSION["isConnected"]
         {
-          echo '<a href="AddBook.php" class="btn btn-secondary my-2">Ajouter un ouvrage</a>';
+          echo '<a href="addBook.php" class="btn btn-secondary my-2">Ajouter un ouvrage</a>';
         }
         ?>
       </p>

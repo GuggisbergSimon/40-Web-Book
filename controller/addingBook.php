@@ -1,5 +1,5 @@
 <?php
-include 'Database.php';
+include 'database.php';
 
 //Example of a code to create a basic user root - root for data manipulation
 $servername = 'localhost';

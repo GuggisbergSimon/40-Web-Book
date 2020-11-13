@@ -1,6 +1,6 @@
 <?php
   include 'functions.php';
-  include 'Database.php';
+  include 'database.php';
   session_start();
   $sql = connect("localhost","root","root");
 ?>
@@ -58,7 +58,7 @@
       <p class="lead text-muted">Ce site répertorie des oeuvres littéraires de tous les horizons, des lecteurs passionés et avides de bouquins, ainsi que leurs appréciations.</p>
       <p>
         <a href="home.php" class="btn btn-primary my-2">Accueil</a>
-        <a href="AddBook.php" class="btn btn-secondary my-2">Ajouter un ouvrage</a>
+        <a href="addBook.php" class="btn btn-secondary my-2">Ajouter un ouvrage</a>
       </p>
     </div>
   </section>
