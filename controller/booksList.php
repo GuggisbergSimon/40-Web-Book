@@ -1,6 +1,6 @@
 <?php
   include 'functions.php';
-  include 'database.php';
+  include '../model/database.php';
   session_start();
   $sql = connect("localhost","root","root");
 ?>
@@ -76,7 +76,7 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <img src="../images/' . $details["booCoverLink"] . '" alt="" width=100% height=300 >
+                  <img src="../userContent/images/' . $details["booCoverLink"] . '" alt="" width=100% height=300 >
                   <p class="card-text"> <strong>Titre</strong> : ' . $details["booTitle"] .'</p>
                   <p class="card-text"> <strong>Auteur</strong> : ' . findAutName(readTable($sql,"t_author"),$details["idAuthor"]) . '</p>
                   <p class="card-text"> <strong>Année</strong> : ' . $details["booYearEdited"] . '</p>
@@ -100,7 +100,7 @@
             $name = $details["idBook"] . ".jpg";
             echo '<div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
-                      <img src="../images/' . $details["booCoverLink"]. '" alt="" width=100% height=300>
+                      <img src="../userContent/images/' . $details["booCoverLink"]. '" alt="" width=100% height=300>
                       <div class="card-body">
                         <p class="card-text"> <strong>Titre</strong> : ' . $details["booTitle"] .'</p>
                         <p class="card-text"> <strong>Auteur</strong> : ' . findAutName(readTable($sql,"t_author"),$details["idAuthor"]) .'</p>
