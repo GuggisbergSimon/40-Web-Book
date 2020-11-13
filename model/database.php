@@ -3,9 +3,12 @@
 /**
  * Authors : Julien Leresche & Simon Guggisberg
  * Date : 02.11.2020
- * Description : TODO
+ * Description : Database class interacting with data on MySQL server
  */
 
+/**
+ * Class Database
+ */
 class Database
 {
     private $connector;
@@ -25,16 +28,27 @@ class Database
         }
     }
 
+    /**
+     * @param $query
+     * @return false|PDOStatement
+     */
     private function querySimpleExecute($query)
     {
         return $this->connector->query($query);
     }
 
+    /**
+     * @param $req
+     * @return mixed
+     */
     private function formatData($req)
     {
         return $req->fetchALL(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @param $req
+     */
     private function unsetData($req)
     {
         $req->closeCursor();

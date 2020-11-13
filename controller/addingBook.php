@@ -1,10 +1,9 @@
 <?php
-include '../model/database.php';
 
 /**
  * Authors : Julien Leresche & Simon Guggisberg
  * Date : 02.11.2020
- * Description : TODO
+ * Description : page handling various checks after a book has been added
  */
 
 include '../model/database.php';

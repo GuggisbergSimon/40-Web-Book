@@ -3,7 +3,7 @@
 /**
  * Authors : Julien Leresche & Simon Guggisberg
  * Date : 02.11.2020
- * Description : TODO
+ * Description : various utilities and functions to use throughout the code
  */
 
 /**
