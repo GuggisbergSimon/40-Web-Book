@@ -1,4 +1,5 @@
 <?php
+include '../model/database.php';
 
 /**
  * Authors : Julien Leresche & Simon Guggisberg

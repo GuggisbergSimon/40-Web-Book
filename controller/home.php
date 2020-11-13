@@ -44,15 +44,30 @@
       <a href="#" class="navbar-brand d-flex align-items-center">
         <strong><h1>Accueil</h1></strong>
       </a>
-      <form method="post">
-        <div class="form-group" >
-          <input type="text" class="form-control" id="username" aria-describedby="userHelp" placeholder="Username">
-        </div>
-        <div class="form-group">
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-        </div>
-        <button type="submit" name="login" class="btn btn-primary">Login</button>
-      </form>
+      <?php
+        if(isset($_SESSION["isConnected"]))
+        {
+          echo '<form method="post">
+                  <div class="form-group" >
+                  <label for="username">Connecté en tant que ' . $_SESSION["username"] . ' </label>
+                  </div>
+                  <button type="submit" name="logout" class="btn btn-primary">Logout</button>
+                </form>';
+        }
+        else
+        {
+          echo '<form method="post">
+                  <div class="form-group" >
+                    <input type="text" class="form-control" id="username" aria-describedby="userHelp" name="username" placeholder="Username">
+                  </div>
+                  <div class="form-group">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                  </div>
+                  <button type="submit" name="login" class="btn btn-primary">Login</button>
+                </form>';
+        }
+        ?>
+
     </div>
   </div>
 </header>
@@ -60,7 +75,18 @@
 <?php
   if(isset($_POST["login"]))
   {
-    $_SESSION["isConnected"] = 1;
+    foreach($database->readTable("t_user") as $user)
+    if($_POST["username"] == $user["usePseudo"] && $_POST["password"] == $user["usePassword"])
+    {
+      $_SESSION["isConnected"] = 1;
+      $_SESSION["username"] = $_POST["username"];
+      header("location: home.php");
+    }
+  } 
+  if(isset($_POST["logout"]))
+  {
+     session_destroy();
+     header("location: home.php");
   }
 ?>
 
@@ -73,7 +99,7 @@
       <p>
         <a href="booksList.php" class="btn btn-primary my-2">Liste des ouvrages</a>
         <?php
-        if(TRUE) //preg_match('/^1{1,1}$/',$_SESSION["isConnected"]
+        if(isset($_SESSION["isConnected"]))
         {
           echo '<a href="addBook.php" class="btn btn-secondary my-2">Ajouter un ouvrage</a>';
         }
