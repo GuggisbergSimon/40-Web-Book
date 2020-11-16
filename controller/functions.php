@@ -7,13 +7,26 @@
  */
 
 /**
+ * @param $path
+ * @return false|string
+ */
+function display($path)
+{
+    //declare variable present in php here
+    
+    $view = file_get_contents($path);
+    ob_start();
+    eval('?>' . $view);
+    return ob_get_clean();
+}
+
+/**
  * Concatenation of author's name and surname
- * @param string $table
+ * @param array $table
  * @param int $index
  * @return string
  */
-function findAutName(array $table, int $index): string 
+function findAutName(array $table, int $index): string
 {
     return $table[$index - 1]["autName"] . " " . $table[$index - 1]["autSurname"];
 }
-?>

@@ -5,4 +5,5 @@
  * Description : TODO
  */
 
-    header("Location: ../view/addBook.html");
+include 'functions.php';
+echo display('../view/addBook.html');
