@@ -45,29 +45,8 @@
         <strong><h1>Accueil</h1></strong>
       </a>
       <?php
-        if(isset($_SESSION["isConnected"]))
-        {
-          echo '<form method="post">
-                  <div class="form-group" >
-                  <label for="username">Connecté en tant que ' . $_SESSION["username"] . ' </label>
-                  </div>
-                  <button type="submit" name="logout" class="btn btn-primary">Logout</button>
-                </form>';
-        }
-        else
-        {
-          echo '<form method="post">
-                  <div class="form-group" >
-                    <input type="text" class="form-control" id="username" aria-describedby="userHelp" name="username" placeholder="Username">
-                  </div>
-                  <div class="form-group">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                  </div>
-                  <button type="submit" name="login" class="btn btn-primary">Login</button>
-                </form>';
-        }
-        ?>
-
+        displayLoginSection();
+      ?>
     </div>
   </div>
 </header>
@@ -75,18 +54,11 @@
 <?php
   if(isset($_POST["login"]))
   {
-    foreach($database->readTable("t_user") as $user)
-    if($_POST["username"] == $user["usePseudo"] && $_POST["password"] == $user["usePassword"])
-    {
-      $_SESSION["isConnected"] = 1;
-      $_SESSION["username"] = $_POST["username"];
-      header("location: home.php");
-    }
+    login("home.php",$database->readTable("t_user"));
   } 
   if(isset($_POST["logout"]))
   {
-     session_destroy();
-     header("location: home.php");
+    logout("home.php");
   }
 ?>
 
