@@ -13,7 +13,7 @@
 function display($path)
 {
     //declare variable present in php here
-    
+
     $view = file_get_contents($path);
     ob_start();
     eval('?>' . $view);

@@ -59,18 +59,18 @@ class Database
      * @param string[] $strings
      * @return string merged
      */
-    function mergeStrings($strings): string
+    function mergeStrings($strings, $char): string
     {
         $stringsAsString = "";
         foreach ($strings as $string) {
-            $stringsAsString = $stringsAsString . ', ' . $string;
+            $stringsAsString = $stringsAsString . $char . ', ' . $char . addslashes($string);
         }
         $stringsAsString = substr_replace($stringsAsString, '(', 0, 2);
-        return $stringsAsString . ')';
+        return $stringsAsString . $char .')';
     }
 
     /**
-     * Read a table and return an array with table's informations
+     * Read a table and return an array with the table's informations
      * @param string $tableName
      * @return array
      */
@@ -165,10 +165,10 @@ class Database
      */
     function addData($table, $columns, $values): int
     {
-        echo "$table " . var_dump($columns) . " " . var_dump($values);
+        echo "added new entry to $table " . var_dump($columns) . " " . var_dump($values);
 
         $id = 'id' . ucfirst(substr($table, 2, strlen($table)));
-        $this->querySimpleExecute('insert into ' . $table . ' ' . $this->mergeStrings($columns) . ' values ' . $this->mergeStrings($values));
+        $this->querySimpleExecute('insert into ' . $table . ' ' . $this->mergeStrings($columns,'') . ' values ' . $this->mergeStrings($values, '\''));
         $results = $this->querySimpleExecute("select max($id) from " . $table);
         $results = $this->formatData($results);
         return (int)($results[0]["max($id)"]);
@@ -181,7 +181,7 @@ class Database
      */
     function addUser($username, $password)
     {
-        $this->addData("t_user", ["usePseudo", "usePassword"], ["'$username'", "'$password'"]);
+        $this->addData("t_user", ["usePseudo", "usePassword"], [$username, $password]);
     }
 
     /**
@@ -192,7 +192,7 @@ class Database
      */
     function addAuthor($name, $surname): int
     {
-        return $this->addData("t_author", ["autName", "autSurname"], ["'$name'", "'$surname'"]);
+        return $this->addData("t_author", ["autName", "autSurname"], [$name, $surname]);
     }
 
     /**
@@ -202,7 +202,7 @@ class Database
      */
     function addEditor($name): int
     {
-        return $this->addData("t_editor", ["ediName"], ["'$name'"]);
+        return $this->addData("t_editor", ["ediName"], [$name]);
     }
 
     /**
@@ -212,7 +212,7 @@ class Database
      */
     function addCategory($name): int
     {
-        return $this->addData("t_category", ["catName"], ["'$name'"]);
+        return $this->addData("t_category", ["catName"], [$name]);
     }
 
     /**
@@ -232,7 +232,7 @@ class Database
     {
         $this->addData("t_book",
             ["booTitle", "booNbrPages", "booExcerptLink", "booSummary", "booYearEdited", "booAverageNotes", "booCoverLink", "idAuthor", "idUser", "idEditor", "idCategory"],
-            ["'$title'", $numberPages, "'$excerptLink'", "'$summary'", $year, -1.0, "'$coverLink'", $idAuthor, $idUser, $idEditor, $idCategory]);
+            [$title, $numberPages, $excerptLink, $summary, $year, -1.0, $coverLink, $idAuthor, $idUser, $idEditor, $idCategory]);
     }
 
 #endregion
