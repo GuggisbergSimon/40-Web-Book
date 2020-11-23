@@ -1,10 +1,9 @@
 <?php
-include '../model/database.php';
 
 /**
  * Authors : Julien Leresche & Simon Guggisberg
  * Date : 02.11.2020
- * Description : TODO
+ * Description : page handling various checks after a book has been added
  */
 
 include '../model/database.php';
@@ -59,9 +58,8 @@ if (isset($_POST['title']) && !empty($_POST['title'])
 
     //todo add idUser of user logged in
     $idUser = 1;
-    $database->addBook(htmlspecialchars($_POST['title']), $_POST['numberPages'], htmlspecialchars($destinationExcerpt), htmlspecialchars($_POST['summary']), $_POST['year'], htmlspecialchars($destinationPic), $idAuthor, $idUser, $idEditor, $idCategory);
-
+    $database->addBook($_POST['title'], $_POST['numberPages'], $destinationExcerpt, $_POST['summary'], $_POST['year'], $destinationPic, $idAuthor, $idUser, $idEditor, $idCategory);
 } else {
-    //todo put a correct header and a message uwu
-    header("Location : https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    //todo put a correct header and an error message uwu
+    header("Location: https://www.youtube.com/watch?v=dQw4w9WgXcQ");
 }
