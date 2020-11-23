@@ -6,4 +6,4 @@
  */
 
 include 'functions.php';
-echo display('../view/addBook.html');
+echo display('../view/page/addBook.html');

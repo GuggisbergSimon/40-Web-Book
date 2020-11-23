@@ -11,8 +11,7 @@
  */
 function display($path)
 {
-    //declare variable present in php here
-
+    //todo find a way to add variables here lol
     $view = file_get_contents($path);
     ob_start();
     eval('?>' . $view);

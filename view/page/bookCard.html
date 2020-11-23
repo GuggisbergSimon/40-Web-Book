@@ -1,0 +1,17 @@
+<div class="col-md-4">
+    <div class="card mb-4 shadow-sm">
+        <img src="../userContent/images/<?php echo $name ?>" alt="" width=100% height=300>
+        <div class="card-body">
+            <p class="card-text"> Titre : <?php echo $database->readTable("t_book")[$i]['booTitle'] ?></p>
+            <p class="card-text"> Auteur : <?php echo $findAutName($database->readTable('t_author'), $database->readTable('t_book')[$i]['idAuthor']) ?></p>
+            <p class="card-text"> Année : <?php echo $database->readTable('t_book')[$i]['booYearEdited']?></p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#id<?php echo $database->readTable('t_book')[$i]['idBook'] ?>">Détails ouvrage</button>
+                </div>
+                <small class="text-muted">9 mins</small>
+            </div>
+        </div>
+    </div>
+</div>
