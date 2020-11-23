@@ -42,18 +42,23 @@
       <a href="#" class="navbar-brand d-flex align-items-center">
         <strong><h1>Liste des ouvrages</h1></strong>
       </a>
-      <form>
-        <div class="form-group" >
-          <input type="text" class="form-control" id="username" aria-describedby="userHelp" placeholder="Username">
-        </div>
-        <div class="form-group">
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-        </div>
-        <button type="submit" class="btn btn-primary">Login</button>
-      </form>
+      <?php
+        displayLoginSection();
+      ?>
     </div>
   </div>
 </header>
+
+<?php
+  if(isset($_POST["login"]))
+  {
+    login("home.php",$database->readTable("t_user"));
+  } 
+  if(isset($_POST["logout"]))
+  {
+    logout("home.php");
+  }
+?>
 
 <main role="main">
 
@@ -63,7 +68,12 @@
       <p class="lead text-muted">Ce site répertorie des oeuvres littéraires de tous les horizons, des lecteurs passionés et avides de bouquins, ainsi que leurs appréciations.</p>
       <p>
         <a href="home.php" class="btn btn-primary my-2">Accueil</a>
-        <a href="addBook.php" class="btn btn-secondary my-2">Ajouter un ouvrage</a>
+        <?php
+        if(isset($_SESSION["isConnected"]))
+        {
+          echo '<a href="addBook.php" class="btn btn-secondary my-2">Ajouter un ouvrage</a>';
+        }
+        ?>
       </p>
     </div>
   </section>
