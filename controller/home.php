@@ -4,180 +4,70 @@
  * Authors : Julien Leresche & Simon Guggisberg
  * Date : 02.11.2020
  * Description : TODO
- */
+*/
 
-  include 'functions.php';
-  include '../model/database.php';
-  session_start();
-  $database = new Database();
+include 'functions.php';
+include '../model/database.php';
+session_start();
+$database = new Database();
 
-?>
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v4.1.1">
-    <title>Bibliothèque d'ouvrages</title>
+//variables for MVC
+$displayLoginSection = 'displayLoginSection';
+$title = 'Accueil';
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/album/">
+//display head
+$view = file_get_contents('../view/head.html');
+ob_start();
+eval('?>' . $view);
+echo ob_get_clean();
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <!-- Custom styles for this template -->
+//display header
+$view = file_get_contents('../view/header.html');
+ob_start();
+eval('?>' . $view);
+echo ob_get_clean();
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-
-    span:hover {
-      color: red;
-    }    
-
-    span:visited {
-      color: purple;
-    }  
-
-    .checked {
-      color: orange;
-    }
-
-    .rating {
-      unicode-bidi: bidi-override;
-      direction: rtl;
-    }
-    .rating > span {
-      display: inline-block;
-      position: relative;
-      width: 1.1em;
-    }
-    .rating > span:hover:before,
-    .rating > span:hover ~ span:before {
-      content: "\2605";
-      position: absolute;
-    }
-    </style>
-  </head>
-  <body>
-    <header>
-  <div class="navbar navbar-dark bg-dark shadow-sm">
-    <div class="container d-flex justify-content-between">
-      <a href="#" class="navbar-brand d-flex align-items-center">
-        <strong><h1>Accueil</h1></strong>
-      </a>
-      <?php
-        displayLoginSection();
-      ?>
-    </div>
-  </div>
-</header>
-
-<?php
-  if(isset($_POST["login"]))
-  {
+if(isset($_POST["login"]))
+{
     login("home.php",$database->readTable("t_user"));
-  } 
-  if(isset($_POST["logout"]))
-  {
+}
+if(isset($_POST["logout"]))
+{
     logout("home.php");
-  }
-?>
+}
 
-<main role="main">
-
-  <section class="jumbotron text-center">
-    <div class="container">
-      <h1>Bibliothèque en ligne</h1>
-      <p class="lead text-muted">Ce site répertorie des oeuvres littéraires de tous les horizons, des lecteurs passionés et avides de bouquins, ainsi que leurs appréciations.</p>
-      <p>
-        <a href="booksList.php" class="btn btn-primary my-2">Liste des ouvrages</a>
-        <?php
-        if(isset($_SESSION["isConnected"]))
-        {
-          echo '<a href="addBook.php" class="btn btn-secondary my-2">Ajouter un ouvrage</a>';
-        }
-        ?>
-      </p>
-    </div>
-  </section>
-<?php
-
-  foreach($database->readTableFirstLines("t_book",3) as $details)
+$findAutName = 'findAutName';
+//display header
+$view = file_get_contents('../view/page/home.html');
+ob_start();
+eval('?>' . $view);
+echo ob_get_clean();
+  foreach($database->readTable("t_book") as $details)
   {
-    echo '<div class="modal fade" id="id'. $details["idBook"] .'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Détails</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <img src="../userContent/images/' . $details["booCoverLink"] . '" alt="" width=100% height=300>
-                  <p class="card-text"> Titre : ' . $details["booTitle"] .'</p>
-                  <p class="card-text"> Auteur : ' . findAutName($database->readTable("t_author"), $details["idAuthor"]) . '</p>
-                  <p class="card-text"> Année : ' . $details["booYearEdited"] . '</p>
-                  <p class="card-text"> Nombre de pages : ' . $details["booNbrPages"] . '</p>
-                  <p class="card-text"> Résumé : ' . $details["booSummary"] . '</p>
-                  <p class="card-text"> Appréciation :  
-                            <a role="button" href="?ratingValue=1"  class="fa fa-child checked" onclick=""></a>
-                            <span class="fa fa-child"></span>
-                            <span class="fa fa-child"></span>
-                            <span class="fa fa-child"></span>
-                            <span class="fa fa-child"></span>
-                            <a href="rating.php?idBook=' . $details["idBook"] . '" class="btn btn-primary">Donner une appréciation</a>
-                  </p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
-          </div>';
+      $view = file_get_contents('../view/page/bookCardModal.html');
+      ob_start();
+      eval('?>' . $view);
+      echo ob_get_clean();
   }
 ?>
   <div class="album py-5 bg-light">
     <div class="container">
       <div class="row">
         <?php
-          foreach($database->readTableFirstLines("t_book",3) as $details)
-          {
-            echo '<div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
-                      <img src="../userContent/images/' . $details["booCoverLink"] . '" alt="" width=100% height=300>
-                      <div class="card-body">
-                        <p class="card-text"> Titre : ' . $details["booTitle"] .'</p>
-                        <p class="card-text"> Auteur : ' . findAutName($database->readTable("t_author"), $details["idAuthor"]) .'</p>
-                        <p class="card-text"> Année : ' . $details["booYearEdited"] . '</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                          <div class="btn-group">
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#id' . $details["idBook"] . '">Details ouvrage</button>
-                          </div>
-                          <small class="text-muted">9 mins</small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>';
-          }
+            for($i=0; $i < 5;$i++) // TODO : remplacer par LIMIT 5 dans sql
+            {
+                $name = $database->readTable("t_book")[$i]["booCoverLink"];
+                $view = file_get_contents('../view/page/bookCard.html');
+                ob_start();
+                eval('?>' . $view);
+                echo ob_get_clean();
+            }
         ?>
       </div>
     </div>
   </div>
-
-</main>
-
-</footer class="text-muted">
-  <div class="container">
-    <p class="float-right">
-      <a href="#">Back to top</a>
-    </p>
-  </div>
-</footer>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-</body>
-</html>
+<?php
+$view = file_get_contents('../view/footer.html');
+ob_start();
+eval('?>' . $view);
+echo ob_get_clean();

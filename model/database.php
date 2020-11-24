@@ -55,8 +55,9 @@ class Database
     }
 
     /**
-     * Merges an array as string as the following : (..., ..., ...)
+     * Merges an array as string as the following : (..., ..., ...) with a char (or a string) being added before and after each element
      * @param string[] $strings
+     * @param string $char
      * @return string merged
      */
     function mergeStrings($strings, $char): string
