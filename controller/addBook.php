@@ -7,3 +7,4 @@
 
 include 'functions.php';
 echo display('../view/addBook.html');
+

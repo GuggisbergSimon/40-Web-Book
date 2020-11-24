@@ -10,7 +10,6 @@
   include '../model/database.php';
   session_start();
   $database = new Database();
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -41,21 +40,6 @@
 
     .checked {
       color: orange;
-    }
-
-    .rating {
-      unicode-bidi: bidi-override;
-      direction: rtl;
-    }
-    .rating > span {
-      display: inline-block;
-      position: relative;
-      width: 1.1em;
-    }
-    .rating > span:hover:before,
-    .rating > span:hover ~ span:before {
-      content: "\2605";
-      position: absolute;
     }
     </style>
   </head>
@@ -102,8 +86,7 @@
     </div>
   </section>
 <?php
-
-  foreach($database->readTableFirstLines("t_book",3) as $details)
+  foreach($database->readTable("t_book") as $details)
   {
     echo '<div class="modal fade" id="id'. $details["idBook"] .'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -122,12 +105,14 @@
                   <p class="card-text"> Nombre de pages : ' . $details["booNbrPages"] . '</p>
                   <p class="card-text"> Résumé : ' . $details["booSummary"] . '</p>
                   <p class="card-text"> Appréciation :  
-                            <a role="button" href="?ratingValue=1"  class="fa fa-child checked" onclick=""></a>
-                            <span class="fa fa-child"></span>
-                            <span class="fa fa-child"></span>
-                            <span class="fa fa-child"></span>
-                            <span class="fa fa-child"></span>
-                            <a href="rating.php?idBook=' . $details["idBook"] . '" class="btn btn-primary">Donner une appréciation</a>
+                            <span class="fa fa-child checked" onclick=""></span>
+                            <span class="fa fa-child checked"></span>
+                            <span class="fa fa-child checked"></span>
+                            <span class="fa fa-child"></span></button>
+                            <span class="fa fa-child"></span></button>
+                            <form action="" method="POST">
+                              <input type="submit" class="button" value="Envoyer">
+                            </form>
                   </p>
                 </div>
                 <div class="modal-footer">
@@ -142,19 +127,20 @@
     <div class="container">
       <div class="row">
         <?php
-          foreach($database->readTableFirstLines("t_book",3) as $details)
+          for($i=0; $i < 5;$i++) // TODO : remplacer par LIMIT 5 dans sql
           {
+            $name = $database->readTable("t_book")[$i]["booCoverLink"];
             echo '<div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
-                      <img src="../userContent/images/' . $details["booCoverLink"] . '" alt="" width=100% height=300>
+                      <img src="../userContent/images/' . $name . '" alt="" width=100% height=300>
                       <div class="card-body">
-                        <p class="card-text"> Titre : ' . $details["booTitle"] .'</p>
-                        <p class="card-text"> Auteur : ' . findAutName($database->readTable("t_author"), $details["idAuthor"]) .'</p>
-                        <p class="card-text"> Année : ' . $details["booYearEdited"] . '</p>
+                        <p class="card-text"> Titre : ' . $database->readTable("t_book")[$i]["booTitle"] .'</p>
+                        <p class="card-text"> Auteur : ' . findAutName($database->readTable("t_author"), $database->readTable("t_book")[$i]["idAuthor"]) .'</p>
+                        <p class="card-text"> Année : ' . $database->readTable("t_book")[$i]["booYearEdited"] . '</p>
                         <div class="d-flex justify-content-between align-items-center">
                           <div class="btn-group">
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#id' . $details["idBook"] . '">Details ouvrage</button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#id' . $database->readTable("t_book")[$i]["idBook"] . '">Details ouvrage</button>
                           </div>
                           <small class="text-muted">9 mins</small>
                         </div>
