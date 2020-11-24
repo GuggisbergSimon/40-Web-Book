@@ -42,7 +42,7 @@ $view = file_get_contents('../view/page/home.html');
 ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
-  foreach($database->readTable("t_book") as $details)
+  foreach($database->readTableFirstLines("t_book",3) as $details)
   {
       $view = file_get_contents('../view/page/bookCardModal.html');
       ob_start();
@@ -54,9 +54,8 @@ echo ob_get_clean();
     <div class="container">
       <div class="row">
         <?php
-            for($i=0; $i < 5;$i++) // TODO : remplacer par LIMIT 5 dans sql
+            foreach($database->readTableFirstLines("t_book",3) as $details)
             {
-                $name = $database->readTable("t_book")[$i]["booCoverLink"];
                 $view = file_get_contents('../view/page/bookCard.html');
                 ob_start();
                 eval('?>' . $view);
