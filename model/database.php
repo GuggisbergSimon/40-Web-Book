@@ -95,6 +95,18 @@ class Database
         return $results;
     }
 
+    /**
+     * Read informations of a book given an id
+     * @param int $bookId
+     * @return array
+     */
+    function getBookById(int $bookId): array
+    {
+        $results = $this->querySimpleExecute('select * from t_book WHERE idBook=' . $bookId);
+        $results = $this->formatData($results);
+        return $results[0];
+    }
+
 #region ExistsAt functions
 
     /**

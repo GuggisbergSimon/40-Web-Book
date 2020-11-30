@@ -14,6 +14,8 @@ $database = new Database();
 //variables for MVC
 $displayLoginSection = 'displayLoginSection';
 $title = 'Accueil';
+$buttonTitle = 'Liste des ouvrages';
+$buttonPageName = 'booksList.php';
 
 //display head
 $view = file_get_contents('../view/head.html');
