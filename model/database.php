@@ -55,8 +55,9 @@ class Database
     }
 
     /**
-     * Merges an array as string as the following : (..., ..., ...)
+     * Merges an array as string as the following : (..., ..., ...) with a char (or a string) being added before and after each element
      * @param string[] $strings
+     * @param string $char
      * @return string merged
      */
     function mergeStrings($strings, $char): string
@@ -77,6 +78,19 @@ class Database
     function readTable(string $tableName): array
     {
         $results = $this->querySimpleExecute('select * from ' . $tableName);
+        $results = $this->formatData($results);
+        return $results;
+    }
+    
+    /**
+     * Read a table and return an array with the first n table's informations
+     * @param string $tableName
+     * @param int 
+     * @return array
+     */
+    function readTableFirstLines(string $tableName, int $limit): array
+    {
+        $results = $this->querySimpleExecute('select * from ' . $tableName . ' order by idBook desc limit ' . $limit);
         $results = $this->formatData($results);
         return $results;
     }

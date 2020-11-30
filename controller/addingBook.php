@@ -7,6 +7,7 @@
  */
 
 include '../model/database.php';
+session_start();
 
 //Example of a code to create a basic user root - root for data manipulation
 $servername = 'localhost';
@@ -56,9 +57,9 @@ if (isset($_POST['title']) && !empty($_POST['title'])
     move_uploaded_file($sourcePic, "../userContent/images/" . $destinationPic);
     move_uploaded_file($sourceExcerpt, "../userContent/documents/" . $destinationExcerpt);
 
-    //todo add idUser of user logged in
-    $idUser = 1;
+    $idUser = $database->userExistsAt($_SESSION['username']);
     $database->addBook($_POST['title'], $_POST['numberPages'], $destinationExcerpt, $_POST['summary'], $_POST['year'], $destinationPic, $idAuthor, $idUser, $idEditor, $idCategory);
+    echo '<a href="home.php">Retour à home</a>';
 } else {
     //todo put a correct header and an error message uwu
     header("Location: https://www.youtube.com/watch?v=dQw4w9WgXcQ");
