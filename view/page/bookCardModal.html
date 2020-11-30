@@ -24,6 +24,7 @@
                 <input type="submit" class="button" value="Envoyer">
             </form>
             </p>
+            <p>Ajouté par : <a href="home.php"><?php echo $database->getUsername($details['idUser']) ?></a></p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
