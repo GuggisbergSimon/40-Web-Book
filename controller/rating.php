@@ -10,6 +10,7 @@
   include '../model/database.php';
   session_start();
   $database = new Database();
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -25,22 +26,37 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-
     <!-- Custom styles for this template -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-.checked {
-  color: orange;
-}
-</style>
+    <style>
+
+    span:hover {
+      color: red;
+    }    
+
+    span:visited {
+      color: purple;
+    }  
+
+    .checked {
+      color: orange;
+    }
+
+    .ratingDiv {
+      width: 100%;
+      display: flex;
+
+    }
+
+    </style>
   </head>
   <body>
     <header>
-
   <div class="navbar navbar-dark bg-dark shadow-sm">
     <div class="container d-flex justify-content-between">
       <a href="#" class="navbar-brand d-flex align-items-center">
-        <strong><h1>Liste des ouvrages</h1></strong>
+        <strong><h1>Appréciation du livre</h1></strong>
       </a>
       <?php
         displayLoginSection();
@@ -67,7 +83,7 @@
       <h1>Bibliothèque en ligne</h1>
       <p class="lead text-muted">Ce site répertorie des oeuvres littéraires de tous les horizons, des lecteurs passionés et avides de bouquins, ainsi que leurs appréciations.</p>
       <p>
-        <a href="home.php" class="btn btn-primary my-2">Accueil</a>
+        <a href="booksList.php" class="btn btn-primary my-2">Liste des ouvrages</a>
         <?php
         if(isset($_SESSION["isConnected"]))
         {
@@ -77,60 +93,42 @@
       </p>
     </div>
   </section>
-<?php
 
-  foreach($database->readTable("t_book") as $details)
-  {
-    echo '<div class="modal fade" id="id'. $details["idBook"] .'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Détails</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <img src="../userContent/images/' . $details["booCoverLink"] . '" alt="" width=100% height=300 >
-                  <p class="card-text"> <strong>Titre</strong> : ' . $details["booTitle"] .'</p>
-                  <p class="card-text"> <strong>Auteur</strong> : ' . findAutName($database->readTable("t_author"),$details["idAuthor"]) . '</p>
-                  <p class="card-text"> <strong>Année</strong> : ' . $details["booYearEdited"] . '</p>
-                  <p class="card-text"> <strong>Nombre de pages</strong> : ' . $details["booNbrPages"] . '</p>
-                  <p class="card-text"> <strong>Résumé</strong> : ' . $details["booSummary"] . '</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
-          </div>';
-  }
-?>
   <div class="album py-5 bg-light">
     <div class="container">
       <div class="row">
         <?php
-          foreach($database->readTable("t_book") as $details)
+          $selectedBook;
+          foreach($database->readTable("t_book") as $book)
           {
-            $name = $details["idBook"] . ".jpg";
-            echo '<div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
-                      <img src="../userContent/images/' . $details["booCoverLink"]. '" alt="" width=100% height=300>
-                      <div class="card-body">
-                        <p class="card-text"> <strong>Titre</strong> : ' . $details["booTitle"] .'</p>
-                        <p class="card-text"> <strong>Auteur</strong> : ' . findAutName($database->readTable("t_author"),$details["idAuthor"]) .'</p>
-                        <p class="card-text"> <strong>Année</strong> : ' . $details["booYearEdited"] . '</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                          <div class="btn-group">
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#id' . $details["idBook"] . '">Details</button>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#evaluation">Évaluer</button>
-                          </div>
+            if($book["idBook"] == $_GET["idBook"])
+            {
+              $selectedBook = $book;
+            }
+          }
+            echo '<div class="ratingDiv">
+                    <div class="col-md-4">
+                      <div class="card mb-4 shadow-sm">
+                        <img src="../userContent/images/' . $selectedBook["booCoverLink"] . '" alt="" width=100% height=300>
+                        <div class="card-body">
+                          <p class="card-text"> Titre : ' . $selectedBook["booTitle"] .'</p>
+                          <p class="card-text"> Auteur : ' . findAutName($database->readTable("t_author"), $selectedBook["idAuthor"]) .'</p>
+                          <p class="card-text"> Année : ' . $selectedBook["booYearEdited"] . '</p>               
                         </div>
                       </div>
                     </div>
+                    <div>
+                      <p>Appréciation :</p> 
+                      <form method="post">
+                        <a role="button" name="rating" href="#"  class="fa fa-child checked"></a>
+                        <a role="button" name="rating" href="?idBook=' . $selectedBook["idBook"] . '"  class="fa fa-child checked"></a>
+                        <span class="fa fa-child"></span>
+                        <span class="fa fa-child"></span>
+                        <span class="fa fa-child"></span>
+                      </form>
+                    </div>
                   </div>';
-          }
+          
         ?>
       </div>
     </div>
