@@ -35,13 +35,13 @@ if (isset($_POST["logout"])) {
 }
 
 //display homepage
-$findAutName = 'findAutName';
 $view = file_get_contents('../view/page/home.html');
 ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
 foreach ($database->readTableFirstLines("t_book", 3) as $details) {
+    $findAutName = 'findAutName';
     $view = file_get_contents('../view/page/bookCardModal.html');
     ob_start();
     eval('?>' . $view);

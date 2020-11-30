@@ -13,7 +13,7 @@ $database = new Database();
 
 //variables for MVC
 $displayLoginSection = 'displayLoginSection';
-$title = 'Accueil';
+$title = 'Bibliothèque d\'ouvrages';
 
 //display head
 $view = file_get_contents('../view/head.html');
@@ -34,13 +34,13 @@ if (isset($_POST["logout"])) {
     logout("home.php");
 }
 //display homepage
-$findAutName = 'findAutName';
 $view = file_get_contents('../view/page/home.html');
 ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
 foreach ($database->readTable("t_book") as $details) {
+    $findAutName = 'findAutName';
     $view = file_get_contents('../view/page/bookCardModal.html');
     ob_start();
     eval('?>' . $view);
