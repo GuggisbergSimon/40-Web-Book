@@ -6,145 +6,84 @@
  * Description : TODO
  */
 
-  include 'functions.php';
-  include '../model/database.php';
-  session_start();
-  $database = new Database();
+include 'functions.php';
+include '../model/database.php';
+session_start();
+$database = new Database();
+
+//variables for MVC
+$displayLoginSection = 'displayLoginSection';
+$title = 'Appréciation d\'ouvrages';
+$buttonTitle = 'Accueil';
+$buttonPageName = 'home.php';
+
+//display head
+$view = file_get_contents('../view/head.html');
+ob_start();
+eval('?>' . $view);
+echo ob_get_clean();
+
+//display header
+$view = file_get_contents('../view/header.html');
+ob_start();
+eval('?>' . $view);
+echo ob_get_clean();
+
+if(isset($_POST["login"]))
+{
+  login("home.php",$database->readTable("t_user"));
+} 
+if(isset($_POST["logout"]))
+{
+  logout("home.php");
+}
+
+//display homepage
+$view = file_get_contents('../view/page/home.html');
+ob_start();
+eval('?>' . $view);
+echo ob_get_clean();
 
 ?>
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v4.1.1">
-    <title>Bibliothèque d'ouvrages</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/album/">
-
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <!-- Custom styles for this template -->
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-
-    span:hover {
-      color: red;
-    }    
-
-    span:visited {
-      color: purple;
-    }  
-
-    .checked {
-      color: orange;
-    }
-
-    .ratingDiv {
-      width: 100%;
-      display: flex;
-
-    }
-
-    </style>
-  </head>
-  <body>
-    <header>
-  <div class="navbar navbar-dark bg-dark shadow-sm">
-    <div class="container d-flex justify-content-between">
-      <a href="#" class="navbar-brand d-flex align-items-center">
-        <strong><h1>Appréciation du livre</h1></strong>
-      </a>
-      <?php
-        displayLoginSection();
-      ?>
-    </div>
-  </div>
-</header>
-
-<?php
-  if(isset($_POST["login"]))
-  {
-    login("home.php",$database->readTable("t_user"));
-  } 
-  if(isset($_POST["logout"]))
-  {
-    logout("home.php");
-  }
-?>
-
-<main role="main">
-
-  <section class="jumbotron text-center">
-    <div class="container">
-      <h1>Bibliothèque en ligne</h1>
-      <p class="lead text-muted">Ce site répertorie des oeuvres littéraires de tous les horizons, des lecteurs passionés et avides de bouquins, ainsi que leurs appréciations.</p>
-      <p>
-        <a href="booksList.php" class="btn btn-primary my-2">Liste des ouvrages</a>
-        <?php
-        if(isset($_SESSION["isConnected"]))
-        {
-          echo '<a href="addBook.php" class="btn btn-secondary my-2">Ajouter un ouvrage</a>';
-        }
-        ?>
-      </p>
-    </div>
-  </section>
 
   <div class="album py-5 bg-light">
     <div class="container">
       <div class="row">
         <?php
-          $selectedBook;
-          foreach($database->readTable("t_book") as $book)
-          {
-            if($book["idBook"] == $_GET["idBook"])
-            {
-              $selectedBook = $book;
-            }
-          }
-            echo '<div class="ratingDiv">
-                    <div class="col-md-4">
-                      <div class="card mb-4 shadow-sm">
-                        <img src="../userContent/images/' . $selectedBook["booCoverLink"] . '" alt="" width=100% height=300>
-                        <div class="card-body">
-                          <p class="card-text"> Titre : ' . $selectedBook["booTitle"] .'</p>
-                          <p class="card-text"> Auteur : ' . findAutName($database->readTable("t_author"), $selectedBook["idAuthor"]) .'</p>
-                          <p class="card-text"> Année : ' . $selectedBook["booYearEdited"] . '</p>               
-                        </div>
+          $selectedBook=$database->getBookById($_GET["idBook"]);
+          echo '<div class="ratingDiv">
+                  <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                      <img src="../userContent/images/' . $selectedBook["booCoverLink"] . '" alt="" width=100% height=300>
+                      <div class="card-body">
+                        <p class="card-text"> Titre : ' . $selectedBook["booTitle"] .'</p>
+                        <p class="card-text"> Auteur : ' . findAutName($database->readTable("t_author"), $selectedBook["idAuthor"]) .'</p>
+                        <p class="card-text"> Année : ' . $selectedBook["booYearEdited"] . '</p>               
                       </div>
                     </div>
-                    <div>
-                      <p>Appréciation :</p> 
-                      <form method="post">
-                        <a role="button" name="rating" href="#"  class="fa fa-child checked"></a>
-                        <a role="button" name="rating" href="?idBook=' . $selectedBook["idBook"] . '"  class="fa fa-child checked"></a>
-                        <span class="fa fa-child"></span>
-                        <span class="fa fa-child"></span>
-                        <span class="fa fa-child"></span>
-                      </form>
-                    </div>
-                  </div>';
+                  </div>
+                  <div>
+                    <p><h4>Appréciation :</h4></p> 
+                    <form method="post">
+                      <span class="fa fa-child fa-2x checked"></span>
+                      <span class="fa fa-child fa-2x checked"></span>
+                      <span class="fa fa-child fa-2x"></span>
+                      <span class="fa fa-child fa-2x"></span>
+                      <span class="fa fa-child fa-2x"></span>
+                    </form>
+                  </div>
+                </div>';
           
         ?>
       </div>
     </div>
   </div>
 
-</main>
-
-</footer class="text-muted">
-  <div class="container">
-    <p class="float-right">
-      <a href="#">Back to top</a>
-    </p>
-  </div>
-</footer>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-</body>
-</html>
+<?php
+//display footer
+$view = file_get_contents('../view/footer.html');
+ob_start();
+eval('?>' . $view);
+echo ob_get_clean();
+?>
