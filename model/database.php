@@ -87,9 +87,14 @@ class Database
      * @param $id
      * @return string
      */
-    function getUsername($id): string {
+    function getUsernameByUserId($id): string {
         $result = $this->querySimpleExecute("select usePseudo from t_user where idUser = $id");
         return $this->formatData($result)[0]['usePseudo'];
+    }
+
+    function getBooksByUserId($id): array {
+        $result = $this->querySimpleExecute("select * from t_book where idUser = $id");
+        return $this->formatData($result);
     }
     
     /**
