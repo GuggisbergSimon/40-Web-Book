@@ -122,6 +122,30 @@ class Database
         return $results[0];
     }
 
+    /**
+     * Read informations of a book given an id
+     * @param int $bookId
+     * @return array
+     */
+    function getEvaluationsFromBook(int $bookId): array
+    {
+        $results = $this->querySimpleExecute('select * from t_evaluate LEFT OUTER JOIN t_book ON t_evaluate.idBook = t_book.idBook WHERE t_book.idBook=' . $bookId);
+        $results = $this->formatData($results);
+        return $results;
+    }
+
+        /**
+     * Read informations of a book given an id
+     * @param int $bookId
+     * @return array
+     */
+    function getUserById(int $userId): array
+    {
+        $results = $this->querySimpleExecute('select * from t_user WHERE idUser=' . $userId);
+        $results = $this->formatData($results);
+        return $results[0];
+    }
+
 #region ExistsAt functions
 
     /**
@@ -215,6 +239,14 @@ class Database
         return (int)($results[0]["max($id)"]);
     }
 
+    function addDataBis($table, $columns, $values)
+    {
+        echo "added new entry to $table " . var_dump($columns) . " " . var_dump($values);
+        $query = 'insert into ' . $table . ' ' . $this->mergeStrings($columns,'') . ' values ' . $this->mergeStrings($values, '\'');
+        echo $query;
+        $this->querySimpleExecute('insert into ' . $table . ' ' . $this->mergeStrings($columns,'') . ' values ' . $this->mergeStrings($values, '\''));
+    }
+
     /**
      * Adds an user to the database
      * @param string $username
@@ -224,6 +256,17 @@ class Database
     {
         $this->addData("t_user", ["usePseudo", "usePassword"], [$username, $password]);
     }
+
+    /**
+     * Adds a rating to the database
+     * 
+     * 
+     */
+    function addRating($idbook, $idUser, $rating, $summary)
+    {
+        $this->addDataBis("t_evaluate", ["idBook", "idUserEvaluer", "evaNote", "evaRemark"], [$idbook, $idUser, $rating, $summary]);
+    }
+
 
     /**
      * Adds an author to the database
