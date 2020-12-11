@@ -20,6 +20,7 @@
             <p>
                 <a href="rating.php?idBook=<?php echo $details['idBook'] ?>" class="btn btn-primary">Evaluation de l'ouvrage</a>
             </p>
+            <p>Ajouté par : <a href="<?php echo "userDetail.php?idUser=" . $details['idUser'] ?>"><?php echo $database->getUsernameByUserId($details['idUser']) ?></a></p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
