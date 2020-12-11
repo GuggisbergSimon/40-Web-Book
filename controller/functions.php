@@ -29,6 +29,24 @@ function findAutName(array $table, int $index): string
     return $table[$index - 1]["autName"] . " " . $table[$index - 1]["autSurname"];
 }
 
+function displayRatingStars($averageNote)
+{
+  echo '<p class="card-text mb-auto">';
+  for($i=1; $i <= floor($averageNote); $i++) 
+  {                     
+    echo '<span class="fa fa-star fa-2x checked"></span>';
+  }
+  if($averageNote-floor($averageNote) > 0)
+  {
+    echo '<span class="fa fa-star-half-o fa-2x checked"></span>';
+  }
+  for($i=1; $i <= floor(5-$averageNote); $i++) 
+  {                     
+    echo '<span class="fa fa-star-o fa-2x checked"></span>';
+  }
+  echo '</p>';
+}
+
 function displayLoginSection()
 {
     if(isset($_SESSION["isConnected"]))
@@ -52,6 +70,20 @@ function displayLoginSection()
               <button type="submit" name="login" class="btn btn-primary">Login</button>
             </form>';
     }
+}
+
+function computeAverageNote(array $evaluations)
+{
+  $averageNote = 0;
+  foreach($evaluations as $evaluation)
+  {
+    $averageNote = $averageNote + $evaluation["evaNote"];
+  }
+  if(count($evaluations) > 0)
+  {
+    $averageNote = $averageNote/count($evaluations);
+  }
+  return round($averageNote,1);
 }
 
 function login($pageName,$users)
