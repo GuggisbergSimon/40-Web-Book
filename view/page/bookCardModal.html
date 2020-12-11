@@ -15,14 +15,10 @@
             <p class="card-text"> Nombre de pages : <?php echo $details['booNbrPages'] ?></p>
             <p class="card-text"> Résumé : <?php echo $details['booSummary'] ?></p>
             <p class="card-text"> Appréciation :
-                <span class="fa fa-child checked" onclick=""></span>
-                <span class="fa fa-child checked"></span>
-                <span class="fa fa-child checked"></span>
-                <span class="fa fa-child"></span></button>
-                <span class="fa fa-child"></span></button>                                   
+                <?php displayRatingStars(computeAverageNote($database->getEvaluationsFromBook($details['idBook']))) ?>                               
             </p>
             <p>
-                <a href="rating.php?idBook=<?php echo $details['idBook'] ?>" class="btn btn-primary">Evaluer l'ouvrage</a>
+                <a href="rating.php?idBook=<?php echo $details['idBook'] ?>" class="btn btn-primary">Evaluation de l'ouvrage</a>
             </p>
             <p>Ajouté par : <a href="<?php echo "userDetail.php?idUser=" . $details['idUser'] ?>"><?php echo $database->getUsernameByUserId($details['idUser']) ?></a></p>
         </div>
