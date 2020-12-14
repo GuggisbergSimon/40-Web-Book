@@ -32,11 +32,6 @@ ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
-if(isset($_POST["addRating"]))
-{
-  $database->addRating($_GET["idBook"], 1, $_POST["note"], $_POST["summary"]);
-}
-
 if(isset($_POST["login"]))
 {
   login("rating.php?idBook=" . $_GET["idBook"],$database->readTable("t_user"));
@@ -54,6 +49,12 @@ echo ob_get_clean();
 
 //display evaluation modal
 $view = file_get_contents('../view/page/evaluationModal.html');
+ob_start();
+eval('?>' . $view);
+echo ob_get_clean();
+
+//display evaluations list modal
+$view = file_get_contents('../view/page/evaluationsListModal.html');
 ob_start();
 eval('?>' . $view);
 echo ob_get_clean();

@@ -1,30 +1,28 @@
 <div class="modal fade" id="id<?php echo $details['idBook'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Détails</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <img src="../userContent/images/<?php echo $details['booCoverLink'] ?>" alt="" width=100% height=300>
-            <p class="card-text"> Titre : <?php echo $details['booTitle'] ?></p>
-            <p class="card-text"> Auteur : <?php echo $findAutName($database->readTable('t_author'), $details['idAuthor']) ?></p>
-            <p class="card-text"> Année : <?php echo $details['booYearEdited'] ?></p>
-            <p class="card-text"> Nombre de pages : <?php echo $details['booNbrPages'] ?></p>
-            <p class="card-text"> Résumé : <?php echo $details['booSummary'] ?></p>
-            <p class="card-text"> Appréciation :
-                <?php displayRatingStars(computeAverageNote($database->getEvaluationsFromBook($details['idBook']))) ?>                               
-            </p>
-            <p>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Détails</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img src="../userContent/images/<?php echo $details['booCoverLink'] ?>" alt="" width=100% height=300>
+                <p class="card-text"> Titre : <?php echo $details['booTitle'] ?></p>
+                <p class="card-text"> Auteur : <?php echo $findAutName($database->readTable('t_author'), $details['idAuthor']) ?></p>
+                <p class="card-text"> Année : <?php echo $details['booYearEdited'] ?></p>
+                <p class="card-text"> Nombre de pages : <?php echo $details['booNbrPages'] ?></p>
+                <p class="card-text"> Résumé : <?php echo $details['booSummary'] ?></p>
+                <p class="card-text"> Appréciation :
+                    <?php displayRatingStars($details['booAverageNotes']) ?>                               
+                </p>
+                <p>Ajouté par : <a href="<?php echo "userDetail.php?idUser=" . $details['idUser'] ?>"><?php echo $database->getUsernameByUserId($details['idUser']) ?></a></p>
+            </div>
+            <div class="modal-footer">
                 <a href="rating.php?idBook=<?php echo $details['idBook'] ?>" class="btn btn-primary">Evaluation de l'ouvrage</a>
-            </p>
-            <p>Ajouté par : <a href="<?php echo "userDetail.php?idUser=" . $details['idUser'] ?>"><?php echo $database->getUsernameByUserId($details['idUser']) ?></a></p>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
-</div>
 </div>

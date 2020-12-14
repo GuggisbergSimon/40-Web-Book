@@ -31,20 +31,27 @@ function findAutName(array $table, int $index): string
 
 function displayRatingStars($averageNote)
 {
-  echo '<p class="card-text mb-auto">';
-  for($i=1; $i <= floor($averageNote); $i++) 
-  {                     
-    echo '<span class="fa fa-star fa-2x checked"></span>';
-  }
-  if($averageNote-floor($averageNote) > 0)
+  if($averageNote > 0)
   {
-    echo '<span class="fa fa-star-half-o fa-2x checked"></span>';
+    echo '<p class="card-text mb-auto">';
+    for($i=1; $i <= floor($averageNote); $i++) 
+    {                     
+      echo '<span class="fa fa-star fa-2x checked"></span>';
+    }
+    if($averageNote-floor($averageNote) > 0)
+    {
+      echo '<span class="fa fa-star-half-o fa-2x checked"></span>';
+    }
+    for($i=1; $i <= floor(5-$averageNote); $i++) 
+    {                     
+      echo '<span class="fa fa-star-o fa-2x checked"></span>';
+    }
+    echo '</p>';
+  } 
+  else 
+  {
+    echo 'Aucune appréciation';
   }
-  for($i=1; $i <= floor(5-$averageNote); $i++) 
-  {                     
-    echo '<span class="fa fa-star-o fa-2x checked"></span>';
-  }
-  echo '</p>';
 }
 
 function displayLoginSection()
