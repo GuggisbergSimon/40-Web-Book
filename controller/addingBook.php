@@ -6,7 +6,7 @@
  * Description : page handling various checks after a book has been added
  */
 
-include '../model/database.php';
+include '../model/Database.php';
 session_start();
 
 //Example of a code to create a basic user root - root for data manipulation

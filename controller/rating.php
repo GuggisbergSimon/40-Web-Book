@@ -2,12 +2,12 @@
 
 /**
  * Authors : Julien Leresche & Simon Guggisberg
- * Date : 02.11.2020
- * Description : TODO
+ * Date : 16.11.2020
+ * Description : Page where users add a rating to a book
  */
 
 include 'functions.php';
-include '../model/database.php';
+include '../model/Database.php';
 session_start();
 $database = new Database();
 $evaluations = $database->getEvaluationsFromBook($_GET["idBook"]);
@@ -39,7 +39,7 @@ if(isset($_POST["addRating"]))
 
 if(isset($_POST["login"]))
 {
-  login("rating.php?idBook=" . $_GET["idBook"],$database->readTable("t_user"));
+  login("rating.php?idBook=" . $_GET["idBook"],$database->getTable("t_user"));
 } 
 if(isset($_POST["logout"]))
 {

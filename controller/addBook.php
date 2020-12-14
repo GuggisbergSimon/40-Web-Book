@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Authors : Julien Leresche & Simon Guggisberg
  * Date : 02.11.2020
- * Description : TODO
+ * Description : Page where books are added through a form
  */
 
 include 'functions.php';
-include '../model/database.php';
+include '../model/Database.php';
 session_start();
 $database = new Database();
 
@@ -27,7 +28,7 @@ eval('?>' . $view);
 echo ob_get_clean();
 
 if (isset($_POST["login"])) {
-    login("home.php", $database->readTable("t_user"));
+    login("home.php", $database->getTable("t_user"));
 }
 if (isset($_POST["logout"])) {
     logout("home.php");
