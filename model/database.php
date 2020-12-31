@@ -115,7 +115,7 @@ class Database
     }
 
     /**
-     * Read informations of a user given its id
+     * Get informations of a user given its id
      * @param int $userId
      * @return array
      */
@@ -127,8 +127,8 @@ class Database
     }
 
     /**
-     * Read informations of an author given its id
-     * @param int $userId
+     * Get informations of an author given its id
+     * @param int $authorId
      * @return array
      */
     function getAuthorById(int $authorId): array
@@ -139,11 +139,35 @@ class Database
     }
 
     /**
+     * Get informations of an editor given its id
+     * @param int $editorId
+     * @return array
+     */
+    function getEditorById(int $editorId): array
+    {
+        $results = $this->querySimpleExecute('select * from t_editor WHERE idEditor=' . $editorId);
+        $results = $this->formatData($results);
+        return $results[0];
+    }
+
+    /**
+     * Get informations of a category given its id
+     * @param int $categoryId
+     * @return array
+     */
+    function getCategoryById(int $categoryId): array
+    {
+        $results = $this->querySimpleExecute('select * from t_category WHERE idCategory=' . $categoryId);
+        $results = $this->formatData($results);
+        return $results[0];
+    }
+
+    /**
      * Get Books based on the id of the user
      * @param $userId
      * @return array
      */
-    function getBooksByUserId($userId): array
+    function getBooksByUserId(int $userId): array
     {
         $result = $this->querySimpleExecute("select * from t_book where idUser = $userId");
         return $this->formatData($result);
@@ -174,7 +198,7 @@ class Database
     }
 
     /**
-     * Read informations of a book given an id
+     * Get 3 evaluations of a book given its id
      * @param int $bookId
      * @return array
      */
@@ -329,7 +353,6 @@ class Database
     {
         $this->addDataBis("t_evaluate", ["idBook", "idUserEvaluer", "evaNote", "evaRemark"], [$idbook, $idUser, $rating, $summary]);
     }
-
 
     /**
      * Adds an author to the database

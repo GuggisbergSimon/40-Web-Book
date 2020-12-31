@@ -3,7 +3,7 @@
 /**
  * Authors : Julien Leresche & Simon Guggisberg
  * Date : 02.11.2020
- * Description : Main landing page of the website, 5 books are shown
+ * Description : Main landing page of the website, 3 books are shown
  */
 
 include 'functions.php';

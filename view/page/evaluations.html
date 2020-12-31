@@ -3,11 +3,11 @@
         <div class="row mb-2">
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
-                    <img src="../userContent/images/<?php echo $selectedBook["booCoverLink"] ?>" alt="Couverture du livre">
+                    <img src="../userContent/images/<?php echo $selectedBook['booCoverLink'] ?>" alt="Couverture du livre">
                     <div class="card-body">
-                        <p class="card-text"> Titre : <?php echo $selectedBook["booTitle"] ?></p>
-                        <p class="card-text"> Auteur : <?php echo findAutName($database->getAuthorById($details['idAuthor'])) ?></p>
-                        <p class="card-text"> Année : <?php echo $selectedBook["booYearEdited"] ?></p>               
+                        <p class="card-text"> Titre : <?php echo $selectedBook['booTitle'] ?></p>
+                        <p class="card-text"> Auteur : <?php echo findAutName($database->getAuthorById($selectedBook['idAuthor'])) ?></p>
+                        <p class="card-text"> Année : <?php echo $selectedBook['booYearEdited'] ?></p>               
                     </div>
                 </div>
             </div>
