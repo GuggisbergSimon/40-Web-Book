@@ -1,8 +1,9 @@
 <?php
+
 /**
  * Authors : Julien Leresche & Simon Guggisberg
  * Date : 02.11.2020
- * Description : TODO
+ * Description : Page where books are added through a form
  */
 
 include 'functions.php';

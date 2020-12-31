@@ -1,6 +1,12 @@
 <?php
+
+/**
+ * Authors : Julien Leresche & Simon Guggisberg
+ * Date : 16.11.2020
+ * Description : page handling various checks after a rating has been added
+ */
+
 include '../model/Database.php';
-include 'functions.php';
 $database = new Database();
 
 session_start();

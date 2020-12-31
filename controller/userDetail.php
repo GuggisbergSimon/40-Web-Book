@@ -3,9 +3,8 @@
 /**
  * Authors : Julien Leresche & Simon Guggisberg
  * Date : 04.12.2020
- * Description : TODO
+ * Description : Page showing all the books a user has added
  */
-
 
 include 'functions.php';
 include '../model/Database.php';

@@ -2,8 +2,8 @@
 
 /**
  * Authors : Julien Leresche & Simon Guggisberg
- * Date : 02.11.2020
- * Description : TODO
+ * Date : 16.11.2020
+ * Description : Page where users add a rating to a book
  */
 
 include 'functions.php';

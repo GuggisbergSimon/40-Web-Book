@@ -6,15 +6,14 @@
  * Description : Database class interacting with data on MySQL server
  */
 
+include_once '../controller/config.ini.php';
+
 /**
  * Class Database
  */
 class Database
 {
     private $connector;
-    private $serverName = 'localhost';
-    private $username = 'root';
-    private $password = 'root';
 
     /**
      * Database constructor.
@@ -22,7 +21,13 @@ class Database
     public function __construct()
     {
         try {
-            $this->connector = new PDO('mysql:host=' . $this->serverName . ';dbname=book;charset=utf8', $this->username, $this->password);
+            $host = $GLOBALS['database']['host'];
+            $port = $GLOBALS['database']['port'];
+            $dbname = $GLOBALS['database']['dbname'];
+            $charset = $GLOBALS['database']['charset'];
+            $username = $GLOBALS['database']['username'];
+            $password = $GLOBALS['database']['password'];
+            $this->connector = new PDO('mysql:host=' . $host . ';dbname=' . $dbname . ';charset=' . $charset . '', $username, $password);
         } catch (PDOException $e) {
             die('Erreur : ' . $e->getMessage());
         }
@@ -68,15 +73,17 @@ class Database
             $stringsAsString = $stringsAsString . $char . ', ' . $char . addslashes($string);
         }
         $stringsAsString = substr_replace($stringsAsString, '(', 0, 2);
-        return $stringsAsString . $char .')';
+        return $stringsAsString . $char . ')';
     }
+
+#region Get functions
 
     /**
      * Read a table and return an array with the table's informations
      * @param string $tableName
      * @return array
      */
-    function readTable(string $tableName): array
+    function getTable(string $tableName): array
     {
         $results = $this->querySimpleExecute('select * from ' . $tableName);
         $results = $this->formatData($results);
@@ -84,32 +91,12 @@ class Database
     }
 
     /**
-     * returns the username based on the id
-     * @param $id
-     * @return string
-     */
-    function getUsernameByUserId($id): string {
-        $result = $this->querySimpleExecute("select usePseudo from t_user where idUser = $id");
-        return $this->formatData($result)[0]['usePseudo'];
-    }
-
-    /**
-     * returns all books added by a user based on the id
-     * @param $id
-     * @return array
-     */
-    function getBooksByUserId($id): array {
-        $result = $this->querySimpleExecute("select * from t_book where idUser = $id");
-        return $this->formatData($result);
-    }
-    
-    /**
      * Read a table and return an array with the first n table's informations
      * @param string $tableName
-     * @param int 
+     * @param int
      * @return array
      */
-    function readTableFirstLines(string $tableName, int $limit): array
+    function getTableFirstLines(string $tableName, int $limit): array
     {
         $results = $this->querySimpleExecute('select * from ' . $tableName . ' order by idBook desc limit ' . $limit);
         $results = $this->formatData($results);
@@ -117,7 +104,41 @@ class Database
     }
 
     /**
+     * returns the username based on its id
+     * @param $userId
+     * @return string
+     */
+    function getUsernameByUserId($userId): string
+    {
+        $result = $this->querySimpleExecute("select usePseudo from t_user where idUser = $userId");
+        return $this->formatData($result)[0]['usePseudo'];
+    }
+
+    /**
      * Read informations of a book given an id
+     * @param int $userId
+     * @return array
+     */
+    function getUserById(int $userId): array
+    {
+        $results = $this->querySimpleExecute('select * from t_user WHERE idUser=' . $userId);
+        $results = $this->formatData($results);
+        return $results[0];
+    }
+
+    /**
+     * Get Books based on the id of the user
+     * @param $userId
+     * @return array
+     */
+    function getBooksByUserId($userId): array
+    {
+        $result = $this->querySimpleExecute("select * from t_book where idUser = $userId");
+        return $this->formatData($result);
+    }
+
+    /**
+     * Get information of a book given its id
      * @param int $bookId
      * @return array
      */
@@ -129,7 +150,7 @@ class Database
     }
 
     /**
-     * Read informations of a book given an id
+     * Get evaluations of a book given its id
      * @param int $bookId
      * @return array
      */
@@ -163,6 +184,7 @@ class Database
         $results = $this->formatData($results);
         return $results[0];
     }
+#endregion
 
 #region ExistsAt functions
 
@@ -251,7 +273,7 @@ class Database
         echo "added new entry to $table " . var_dump($columns) . " " . var_dump($values);
 
         $id = 'id' . ucfirst(substr($table, 2, strlen($table)));
-        $this->querySimpleExecute('insert into ' . $table . ' ' . $this->mergeStrings($columns,'') . ' values ' . $this->mergeStrings($values, '\''));
+        $this->querySimpleExecute('insert into ' . $table . ' ' . $this->mergeStrings($columns, '') . ' values ' . $this->mergeStrings($values, '\''));
         $results = $this->querySimpleExecute("select max($id) from " . $table);
         $results = $this->formatData($results);
         return (int)($results[0]["max($id)"]);
@@ -260,9 +282,9 @@ class Database
     function addDataBis($table, $columns, $values)
     {
         echo "added new entry to $table " . var_dump($columns) . " " . var_dump($values);
-        $query = 'insert into ' . $table . ' ' . $this->mergeStrings($columns,'') . ' values ' . $this->mergeStrings($values, '\'');
+        $query = 'insert into ' . $table . ' ' . $this->mergeStrings($columns, '') . ' values ' . $this->mergeStrings($values, '\'');
         echo $query;
-        $this->querySimpleExecute('insert into ' . $table . ' ' . $this->mergeStrings($columns,'') . ' values ' . $this->mergeStrings($values, '\''));
+        $this->querySimpleExecute('insert into ' . $table . ' ' . $this->mergeStrings($columns, '') . ' values ' . $this->mergeStrings($values, '\''));
     }
 
     /**
