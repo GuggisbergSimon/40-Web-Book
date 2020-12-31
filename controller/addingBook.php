@@ -59,7 +59,7 @@ if (isset($_POST['title']) && !empty($_POST['title'])
 
     $idUser = $database->userExistsAt($_SESSION['username']);
     $database->addBook($_POST['title'], $_POST['numberPages'], $destinationExcerpt, $_POST['summary'], $_POST['year'], $destinationPic, $idAuthor, $idUser, $idEditor, $idCategory);
-    echo '<a href="home.php">Retour à home</a>';
+
     header("Location: home.php");
 } else {
     //todo put a correct header and an error message uwu

@@ -1,6 +1,6 @@
 <div class="col-md-4">
     <div class="card mb-4 shadow-sm">
-        <img src="../userContent/images/<?php echo $details['booCoverLink'] ?>" alt="" width=100% height=300>
+        <img src="../userContent/images/<?php echo $details['booCoverLink'] ?>" alt="Couverture du livre">
         <div class="card-body">
             <p class="card-text"> Titre : <?php echo $details['booTitle'] ?></p>
             <p class="card-text"> Auteur : <?php echo $findAutName($database->getTable('t_author'), $details['idAuthor']) ?></p>
@@ -9,7 +9,6 @@
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#id<?php echo $details['idBook'] ?>">Détails ouvrage</button>
                 </div>
-                <small class="text-muted">9 mins</small>
             </div>
         </div>
     </div>
