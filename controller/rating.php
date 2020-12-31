@@ -7,7 +7,7 @@
  */
 
 include 'functions.php';
-include '../model/database.php';
+include '../model/Database.php';
 session_start();
 $database = new Database();
 $selectedEvaluations = $database->getSomeEvaluationsFromBook($_GET["idBook"]);
@@ -35,7 +35,7 @@ echo ob_get_clean();
 
 if(isset($_POST["login"]))
 {
-  login("rating.php?idBook=" . $_GET["idBook"],$database->readTable("t_user"));
+  login("rating.php?idBook=" . $_GET["idBook"],$database->getTable("t_user"));
 } 
 if(isset($_POST["logout"]))
 {

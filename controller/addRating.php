@@ -1,11 +1,11 @@
 <?php
-include '../model/database.php';
+include '../model/Database.php';
 include 'functions.php';
 $database = new Database();
 
 session_start();
 
-$users = $database->readTable("t_user");
+$users = $database->getTable("t_user");
 $evaluations = $database->getAllEvaluationsFromBook($_GET["idBook"]);
 $alreadyRated=0;
 $activeUser;

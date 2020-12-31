@@ -7,7 +7,7 @@
  */
 
 include 'functions.php';
-include '../model/database.php';
+include '../model/Database.php';
 session_start();
 $database = new Database();
 
@@ -30,7 +30,7 @@ eval('?>' . $view);
 echo ob_get_clean();
 
 if (isset($_POST["login"])) {
-    login("home.php", $database->readTable("t_user"));
+    login("home.php", $database->getTable("t_user"));
 }
 if (isset($_POST["logout"])) {
     logout("home.php");
@@ -42,7 +42,7 @@ ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
-foreach ($database->readTableFirstLines("t_book", 3) as $details) {
+foreach ($database->getTableFirstLines("t_book", 3) as $details) {
     $findAutName = 'findAutName';
     $view = file_get_contents('../view/page/bookCardModal.html');
     ob_start();
@@ -54,7 +54,7 @@ foreach ($database->readTableFirstLines("t_book", 3) as $details) {
         <div class="container">
             <div class="row">
                 <?php
-                foreach ($database->readTableFirstLines("t_book", 3) as $details) {
+                foreach ($database->getTableFirstLines("t_book", 3) as $details) {
                     $view = file_get_contents('../view/page/bookCard.html');
                     ob_start();
                     eval('?>' . $view);
