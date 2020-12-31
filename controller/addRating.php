@@ -6,7 +6,7 @@ $database = new Database();
 session_start();
 
 $users = $database->readTable("t_user");
-$evaluations = $database->getEvaluationsFromBook($_GET["idBook"]);
+$evaluations = $database->getAllEvaluationsFromBook($_GET["idBook"]);
 $alreadyRated=0;
 $activeUser;
 foreach($users as $user)
@@ -34,7 +34,7 @@ if(isset($_POST["addRating"]))
     {
         $database->updateRating($_GET["idBook"],$activeUser["idUser"],$_POST["note"],$_POST["summary"]);
     }
-    $evaluations = $database->getEvaluationsFromBook($_GET["idBook"]);
+    $evaluations = $database->getAllEvaluationsFromBook($_GET["idBook"]);
     $database->modifyBookAverageNote(computeAverageNote($evaluations),$_GET["idBook"]);
 } 
 

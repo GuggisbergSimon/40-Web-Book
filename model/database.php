@@ -133,9 +133,21 @@ class Database
      * @param int $bookId
      * @return array
      */
-    function getEvaluationsFromBook(int $bookId): array
+    function getAllEvaluationsFromBook(int $bookId): array
     {
         $results = $this->querySimpleExecute('select * from t_evaluate LEFT OUTER JOIN t_book ON t_evaluate.idBook = t_book.idBook WHERE t_book.idBook=' . $bookId);
+        $results = $this->formatData($results);
+        return $results;
+    }
+
+    /**
+     * Read informations of a book given an id
+     * @param int $bookId
+     * @return array
+     */
+    function getSomeEvaluationsFromBook(int $bookId): array
+    {
+        $results = $this->querySimpleExecute('select * from t_evaluate LEFT OUTER JOIN t_book ON t_evaluate.idBook = t_book.idBook WHERE t_book.idBook=' . $bookId . ' LIMIT 3');
         $results = $this->formatData($results);
         return $results;
     }

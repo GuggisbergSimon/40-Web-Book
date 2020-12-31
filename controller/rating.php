@@ -10,7 +10,8 @@ include 'functions.php';
 include '../model/database.php';
 session_start();
 $database = new Database();
-$evaluations = $database->getEvaluationsFromBook($_GET["idBook"]);
+$selectedEvaluations = $database->getSomeEvaluationsFromBook($_GET["idBook"]);
+$evaluations = $database->getAllEvaluationsFromBook($_GET["idBook"]);
 $averageNote = computeAverageNote($evaluations);
 $selectedBook = $database->getBookById($_GET["idBook"]);
 
