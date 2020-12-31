@@ -173,17 +173,6 @@ class Database
         return $results;
     }
 
-    /**
-     * Read informations of a book given an id
-     * @param int $bookId
-     * @return array
-     */
-    function getUserById(int $userId): array
-    {
-        $results = $this->querySimpleExecute('select * from t_user WHERE idUser=' . $userId);
-        $results = $this->formatData($results);
-        return $results[0];
-    }
 #endregion
 
 #region ExistsAt functions

@@ -3,7 +3,7 @@
         <img src="../userContent/images/<?php echo $details['booCoverLink'] ?>" alt="" width=100% height=300>
         <div class="card-body">
             <p class="card-text"> Titre : <?php echo $details['booTitle'] ?></p>
-            <p class="card-text"> Auteur : <?php echo $findAutName($database->readTable('t_author'), $details['idAuthor']) ?></p>
+            <p class="card-text"> Auteur : <?php echo $findAutName($database->getTable('t_author'), $details['idAuthor']) ?></p>
             <p class="card-text"> Année : <?php echo $details['booYearEdited']?></p>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">

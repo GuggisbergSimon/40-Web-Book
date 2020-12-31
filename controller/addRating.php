@@ -7,6 +7,7 @@
  */
 
 include '../model/Database.php';
+include 'functions.php';
 $database = new Database();
 
 session_start();
