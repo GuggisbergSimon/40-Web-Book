@@ -21,13 +21,12 @@ function display($path)
 
 /**
  * Concatenation of author's name and surname
- * @param array $table
- * @param int $index
+ * @param array $authorInformations
  * @return string
  */
-function findAutName(array $table, int $index): string
+function findAutName(array $authorInformations): string
 {
-    return $table[$index - 1]["autName"] . " " . $table[$index - 1]["autSurname"];
+    return $authorInformations["autName"] . " " . $authorInformations["autSurname"];
 }
 
 function displayRatingStars($averageNote)

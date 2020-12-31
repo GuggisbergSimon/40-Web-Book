@@ -115,13 +115,25 @@ class Database
     }
 
     /**
-     * Read informations of a book given an id
+     * Read informations of a user given its id
      * @param int $userId
      * @return array
      */
     function getUserById(int $userId): array
     {
         $results = $this->querySimpleExecute('select * from t_user WHERE idUser=' . $userId);
+        $results = $this->formatData($results);
+        return $results[0];
+    }
+
+    /**
+     * Read informations of an author given its id
+     * @param int $userId
+     * @return array
+     */
+    function getAuthorById(int $authorId): array
+    {
+        $results = $this->querySimpleExecute('select * from t_author WHERE idAuthor=' . $authorId);
         $results = $this->formatData($results);
         return $results[0];
     }
@@ -138,7 +150,7 @@ class Database
     }
 
     /**
-     * Get information of a book given its id
+     * Get informations of a book given its id
      * @param int $bookId
      * @return array
      */

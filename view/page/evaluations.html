@@ -6,7 +6,7 @@
                     <img src="../userContent/images/<?php echo $selectedBook["booCoverLink"] ?>" alt="Couverture du livre">
                     <div class="card-body">
                         <p class="card-text"> Titre : <?php echo $selectedBook["booTitle"] ?></p>
-                        <p class="card-text"> Auteur : <?php echo findAutName($database->getTable("t_author"), $selectedBook["idAuthor"]) ?></p>
+                        <p class="card-text"> Auteur : <?php echo findAutName($database->getAuthorById($details['idAuthor'])) ?></p>
                         <p class="card-text"> Année : <?php echo $selectedBook["booYearEdited"] ?></p>               
                     </div>
                 </div>
