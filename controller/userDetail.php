@@ -15,6 +15,8 @@ $database = new Database();
 //variables for MVC
 $displayLoginSection = 'displayLoginSection';
 $title = 'Détail Utilisateur';
+$buttonTitle = 'Liste des ouvrages';
+$buttonPageName = 'booksList.php';
 
 //display head
 $view = file_get_contents('../view/head.html');
@@ -34,6 +36,12 @@ if (isset($_POST["login"])) {
 if (isset($_POST["logout"])) {
     logout("#.php");
 }
+
+//display homepage
+$view = file_get_contents('../view/page/home.html');
+ob_start();
+eval('?>' . $view);
+echo ob_get_clean();
 
 //display main page
 if (isset($_SESSION["isConnected"])) {
