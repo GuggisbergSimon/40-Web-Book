@@ -1,53 +1,66 @@
-<!-- todo OPTIONAL make list of existing categories and choice to add new category, use list as input type (autocomplete)-->
-<h1>Add a book</h1>
-<form method="post" action="addingBook.php" enctype="multipart/form-data">
-    <p>
-        <label for="title">Title : </label>
-        <input type="text" id="title" name="title">
-    </p>
-    <p>
-        <label for="category">Category : </label>
-        <select id="category" name="category">
-            <option value="Choose" selected>Choisir</option>
-            <option value="book">Book</option>
-            <option value="comic">Comic</option>
-            <option value="manga">Manga</option>
-        </select>
-    </p>
-    <p>
-        <label for="numberPages">Number of pages : </label>
-        <input type="number" id="numberPages" name="numberPages" min="1">
-    </p>
-    <p>
-        <label for="authorName">Author's name : </label>
-        <input type="text" id="authorName" name="authorName">
-    </p>
-    <p>
-        <label for="authorSurname">Author's surname : </label>
-        <input type="text" id="authorSurname" name="authorSurname">
-    </p>
-    <p>
-        <label for="editor">Editor : </label>
-        <input type="text" id="editor" name="editor">
-    </p>
-    <p>
-        <label for="year">Year : </label>
-        <input type="number" id="year" name="year" max="2020">
-    </p>
-    <p>
-        <label for="picture">Picture :</label>
-        <input type="file" name="picture" id="picture">
-    </p>
-    <p>
-        <label for="excerpt">Excerpt : </label>
-        <input type="file" name="excerpt" id="excerpt">
-    </p>
-    <p>
-        <label for="summary">Summary : </label>
-        <textarea id="summary" name="summary" rows="4" cols="50" maxlength="200"
-                  placeholder="Write a short summary for the book"></textarea>
-    </p>
-    <p>
-        <input type="submit" name="btnSubmit" value="Add book"/>
-    </p>
-</form>
+<main role="main">
+    <section class="jumbotron text-center">
+        <div class="container">
+            <div class="card text-left">
+                <div class="card bg-light">
+                    <div class="card-header"><h3 class="card-title">Ajouter un livre</h3></div>
+                        <div class="card-body">
+                            <form method="post" action="addingBook.php" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="title">Titre : </label>
+                                    <input class="form-control" type="text" id="title" name="title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="category">Categorie : </label>
+                                    <select class="form-control" id="category" name="category">
+                                        <option value="Choose" selected>Choisir</option>
+                                        <?php
+                                        foreach ($categories as $category) {
+                                            echo '<option value="' . $category['catName'] . '">' . $category['catName'] . '</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="numberPages">Nombre de pages : </label>
+                                    <input class="form-control" type="number" id="numberPages" name="numberPages" min="1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="authorName">Prénom de l'auteur : </label>
+                                    <input class="form-control" type="text" id="authorName" name="authorName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="authorSurname">Nom de l'auteur : </label>
+                                    <input class="form-control" type="text" id="authorSurname" name="authorSurname">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editor">Editeur : </label>
+                                    <input class="form-control" type="text" id="editor" name="editor">
+                                </div>
+                                <div class="form-group">
+                                    <label for="year">Année : </label>
+                                    <input type="number" id="year" name="year" max="2020">
+                                </div>
+                                <div class="form-group">
+                                    <label for="picture">Photo de couverture :</label>
+                                    <input class="form-controll-file" type="file" name="picture" id="picture">
+                                </div>
+                                <div class="form-group">
+                                    <label for="excerpt">Echantillon : </label>
+                                    <input class="form-controll-file" type="file" name="excerpt" id="excerpt">
+                                </div>
+                                <div class="form-group">
+                                    <label for="summary">Résumé : </label>
+                                    <textarea class="form-contro" id="summary" name="summary" rows="4" cols="50" maxlength="200"
+                                            placeholder="Write a short summary for the book"></textarea>
+                                </div>
+                                <p>
+                                    <input type="submit" name="btnSubmit" value="Ajouter" class="btn btn-primary"/>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>

@@ -2,15 +2,16 @@
 
 /**
  * Authors : Julien Leresche & Simon Guggisberg
- * Date : 02.11.2020
- * Description : TODO
+ * Date : 16.11.2020
+ * Description : Page where users add a rating to a book
  */
 
 include 'functions.php';
-include '../model/database.php';
+include '../model/Database.php';
 session_start();
 $database = new Database();
-$evaluations = $database->getEvaluationsFromBook($_GET["idBook"]);
+$selectedEvaluations = $database->getSomeEvaluationsFromBook($_GET["idBook"]);
+$evaluations = $database->getAllEvaluationsFromBook($_GET["idBook"]);
 $averageNote = computeAverageNote($evaluations);
 $selectedBook = $database->getBookById($_GET["idBook"]);
 
@@ -32,37 +33,47 @@ ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
-if(isset($_POST["addRating"]))
-{
-  $database->addRating($_GET["idBook"], 1, $_POST["note"], $_POST["summary"]);
-}
-
 if(isset($_POST["login"]))
 {
-  login("rating.php?idBook=" . $_GET["idBook"],$database->readTable("t_user"));
+  login("rating.php?idBook=" . $_GET["idBook"],$database->getTable("t_user"));
 } 
 if(isset($_POST["logout"]))
 {
   logout("rating.php?idBook=" . $_GET["idBook"]);
 }
 
-//display homepage
-$view = file_get_contents('../view/page/home.html');
-ob_start();
-eval('?>' . $view);
-echo ob_get_clean();
+if(isset($_SESSION['isConnected']))
+{
+  //display homepage
+  $view = file_get_contents('../view/page/home.html');
+  ob_start();
+  eval('?>' . $view);
+  echo ob_get_clean();
+  
+  //display evaluation modal
+  $view = file_get_contents('../view/page/evaluationModal.html');
+  ob_start();
+  eval('?>' . $view);
+  echo ob_get_clean();
 
-//display evaluation modal
-$view = file_get_contents('../view/page/evaluationModal.html');
-ob_start();
-eval('?>' . $view);
-echo ob_get_clean();
+  //display evaluations list modal
+  $view = file_get_contents('../view/page/evaluationsListModal.html');
+  ob_start();
+  eval('?>' . $view);
+  echo ob_get_clean();
 
-//display evaluation section
-$view = file_get_contents('../view/page/evaluations.html');
-ob_start();
-eval('?>' . $view);
-echo ob_get_clean();
+  //display evaluation section
+  $view = file_get_contents('../view/page/evaluations.html');
+  ob_start();
+  eval('?>' . $view);
+  echo ob_get_clean();
+} else {
+  //display forbidden access message
+  $view = file_get_contents('../view/page/forbiddenAccessMessage.html');
+  ob_start();
+  eval('?>' . $view);
+  echo ob_get_clean();
+}
 
 //display footer
 $view = file_get_contents('../view/footer.html');

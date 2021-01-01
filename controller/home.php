@@ -3,11 +3,11 @@
 /**
  * Authors : Julien Leresche & Simon Guggisberg
  * Date : 02.11.2020
- * Description : TODO
+ * Description : Main landing page of the website, 5 books are shown
  */
 
 include 'functions.php';
-include '../model/database.php';
+include '../model/Database.php';
 session_start();
 $database = new Database();
 
@@ -16,6 +16,7 @@ $displayLoginSection = 'displayLoginSection';
 $title = 'Accueil';
 $buttonTitle = 'Liste des ouvrages';
 $buttonPageName = 'booksList.php';
+$findAutName = 'findAutName';
 
 //display head
 $view = file_get_contents('../view/head.html');
@@ -30,7 +31,7 @@ eval('?>' . $view);
 echo ob_get_clean();
 
 if (isset($_POST["login"])) {
-    login("home.php", $database->readTable("t_user"));
+    login("home.php", $database->getTable("t_user"));
 }
 if (isset($_POST["logout"])) {
     logout("home.php");
@@ -42,32 +43,46 @@ ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
-foreach ($database->readTableFirstLines("t_book", 3) as $details) {
-    $findAutName = 'findAutName';
-    $view = file_get_contents('../view/page/bookCardModal.html');
-    ob_start();
-    eval('?>' . $view);
-    echo ob_get_clean();
+if(isset($_SESSION['isConnected']))
+{
+    foreach ($database->getTableFirstLines("t_book", 5) as $details) {
+        $view = file_get_contents('../view/page/bookCardModal.html');
+        ob_start();
+        eval('?>' . $view);
+        echo ob_get_clean();
+    }
 }
 ?>
-    <div class="album py-5 bg-light">
-        <div class="container">
-            <div class="row">
-                <?php
-                foreach ($database->readTableFirstLines("t_book", 3) as $details) {
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <?php
+            if(isset($_SESSION['isConnected']))
+            {
+                foreach ($database->getTableFirstLines("t_book", 5) as $details) {
                     $view = file_get_contents('../view/page/bookCard.html');
                     ob_start();
                     eval('?>' . $view);
                     echo ob_get_clean();
                 }
-                ?>
-            </div>
+            } else {
+                foreach ($database->getTableFirstLines("t_book", 5) as $details) {
+                    $view = file_get_contents('../view/page/bookCardLogout.html');
+                    ob_start();
+                    eval('?>' . $view);
+                    echo ob_get_clean();
+                }
+            }
+            ?>
         </div>
     </div>
-<?php
+</div>
 
+<?php
 //display footer
 $view = file_get_contents('../view/footer.html');
 ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
+?>

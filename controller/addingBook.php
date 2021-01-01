@@ -6,7 +6,7 @@
  * Description : page handling various checks after a book has been added
  */
 
-include '../model/database.php';
+include '../model/Database.php';
 session_start();
 
 //Example of a code to create a basic user root - root for data manipulation
@@ -52,15 +52,16 @@ if (isset($_POST['title']) && !empty($_POST['title'])
 
     $sourcePic = $_FILES['picture']['tmp_name'];
     $sourceExcerpt = $_FILES['excerpt']['tmp_name'];
-    $destinationPic = date("YmdHis") . $_FILES["picture"]["name"];
-    $destinationExcerpt = date("YmdHis") . $_FILES["excerpt"]["name"];
+    $destinationPic = date("YmdHis") . substr($_FILES["picture"]["name"],0,3);
+    $destinationExcerpt = date("YmdHis") . substr($_FILES["excerpt"]["name"],0,3);
     move_uploaded_file($sourcePic, "../userContent/images/" . $destinationPic);
     move_uploaded_file($sourceExcerpt, "../userContent/documents/" . $destinationExcerpt);
 
     $idUser = $database->userExistsAt($_SESSION['username']);
     $database->addBook($_POST['title'], $_POST['numberPages'], $destinationExcerpt, $_POST['summary'], $_POST['year'], $destinationPic, $idAuthor, $idUser, $idEditor, $idCategory);
-    echo '<a href="home.php">Retour à home</a>';
+
+    header("Location: home.php");
 } else {
     //todo put a correct header and an error message uwu
-    header("Location: https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    header("Location: addBook.php");
 }
