@@ -14,6 +14,8 @@ $database = new Database();
 //variables for MVC
 $displayLoginSection = 'displayLoginSection';
 $title = 'Ajout';
+$buttonTitle = 'Liste des ouvrages';
+$buttonPageName = 'booksList.php';
 
 //display head
 $view = file_get_contents('../view/head.html');
@@ -36,7 +38,17 @@ if (isset($_POST["logout"])) {
 
 //display main page
 if (isset($_SESSION["isConnected"])) {
-    echo display('../view/page/addBook.html');
+    //display form
+    $view = file_get_contents('../view/page/addBook.html');
+    ob_start();
+    eval('?>' . $view);
+    echo ob_get_clean();
+} else {
+    //display forbidden access message
+    $view = file_get_contents('../view/page/forbiddenAccessMessage.html');
+    ob_start();
+    eval('?>' . $view);
+    echo ob_get_clean();
 }
 
 //display footer

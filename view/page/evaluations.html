@@ -3,55 +3,75 @@
         <div class="row mb-2">
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
-                    <img src="../userContent/images/<?php echo $selectedBook["booCoverLink"] ?>" alt="" width=100% height=300>
+                    <img src="../userContent/images/<?php echo $selectedBook['booCoverLink'] ?>" alt="Couverture du livre">
                     <div class="card-body">
-                        <p class="card-text"> Titre : <?php echo $selectedBook["booTitle"] ?></p>
-                        <p class="card-text"> Auteur : <?php echo findAutName($database->getTable("t_author"), $selectedBook["idAuthor"]) ?></p>
-                        <p class="card-text"> Année : <?php echo $selectedBook["booYearEdited"] ?></p>               
+                        <p class="card-text"> Titre : <?php echo $selectedBook['booTitle'] ?></p>
+                        <p class="card-text"> Auteur : <?php echo findAutName($database->getAuthorById($selectedBook['idAuthor'])) ?></p>
+                        <p class="card-text"> Année : <?php echo $selectedBook['booYearEdited'] ?></p>               
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative" height=100%>
+                <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                     <div class="col p-4 d-flex flex-column position-static">
                         <h3 class="mb-0">Appréciation globale :</h3>
-                        <div class="mb-1 text-muted"><?php echo $averageNote ?>/5</div>
+                        <div class="mb-1 text-muted"><?php if($averageNote >0 ){ echo $averageNote . '/5  (' . count($evaluations) . ' notes)'; } ?></div>
                         <?php displayRatingStars($averageNote); ?>
-                        <a href="#" class="stretched-link">Continue reading</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative" height=100%>
+                <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                     <div class="col p-4 d-flex flex-column position-static">
                         <h3 class="mb-0">Commentaires sélectionnés :</h3>
-                        <div class="mb-1 text-muted">Nov 12</div>
                         <div class="list-group" id="myList" role="tablist">
                             <?php
-                                foreach($evaluations as $evaluation)
+                                if(count($selectedEvaluations) > 0)
                                 {
-                                    echo '<a class="list-group-item list-group-item-action" data-toggle="list" href="#id' . $evaluation["idUserEvaluer"] . '" role="tab">' . $database->getUserById($evaluation["idUserEvaluer"])["usePseudo"] . ' : ' . $evaluation["evaNote"] . '/5</a>';
+                                    foreach($selectedEvaluations as $evaluation)
+                                    {
+                                        echo '<a class="list-group-item list-group-item-action" data-toggle="list" href="#idNumber' . $evaluation["idUserEvaluer"] . '" role="tab">' . $database->getUserById($evaluation["idUserEvaluer"])["usePseudo"] . ' : ' . $evaluation["evaNote"] . '/5</a>';
+                                    }
+                                }
+                                else
+                                {
+                                    echo 'Aucun commentaires';
                                 }
                             ?>
                         </div>
                         <div class="tab-content no-gutters border rounded">
                             <?php
-                                foreach($evaluations as $evaluation)
+                                foreach($selectedEvaluations as $evaluation)
                                 {
-                                    echo '<div class="tab-pane" id="id' . $evaluation["idUserEvaluer"] . '" role="tabpanel">' . $evaluation["evaRemark"] . '</div>';
+                                    echo '<div class="tab-pane overflow-auto" id="idNumber' . $evaluation["idUserEvaluer"] . '" role="tabpanel">' . $evaluation["evaRemark"] . '</div>';
                                 }
                             ?> 
                         </div>
                         <div class="btn-group" role="group" aria-label="Basic example">
                             <div class="btn-group mr-2" role="group" aria-label="first">
-                                <a href="#" class="btn btn-primary">Voir les notes</a>
+                                <a data-toggle="modal" data-target="#ratingList" class="btn btn-primary">Voir les notes</a>
                             </div>
                             <?php
                                 if(isset($_SESSION["isConnected"]))
                                 {
-                                    echo '<div class="btn-group mr-2" role="group" aria-label="second">
-                                            <a data-toggle="modal" data-target="#notation" class="btn btn-secondary">Donner son avis</a>
-                                        </div>';
+                                    $alreadyEvaluated=0;
+                                    foreach($evaluations as $evaluation)
+                                    {
+                                        if($evaluation["idUserEvaluer"] == $database->userExistsAt($_SESSION["username"]))
+                                        {
+                                            $alreadyEvaluated=1;
+                                        }
+                                    }
+                                    if($alreadyEvaluated == 0)
+                                    {
+                                        echo '<div class="btn-group mr-2" role="group" aria-label="second">
+                                                <a data-toggle="modal" data-target="#rating" class="btn btn-secondary">Donner son avis</a>
+                                            </div>';
+                                    } else {
+                                        echo '<div class="btn-group mr-2" role="group" aria-label="second">
+                                                <a data-toggle="modal" data-target="#rating" class="btn btn-secondary">Modifier son avis</a>
+                                            </div>';
+                                    }
                                 }
                             ?>
                         </div>

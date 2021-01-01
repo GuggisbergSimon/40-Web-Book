@@ -39,7 +39,8 @@ class Database
      */
     private function querySimpleExecute($query)
     {
-        return $this->connector->query($query);
+        $req = $this->connector->query($query);
+        return $req;
     }
 
     /**
@@ -114,7 +115,7 @@ class Database
     }
 
     /**
-     * Read informations of a book given an id
+     * Get informations of a user given its id
      * @param int $userId
      * @return array
      */
@@ -126,18 +127,54 @@ class Database
     }
 
     /**
+     * Get informations of an author given its id
+     * @param int $authorId
+     * @return array
+     */
+    function getAuthorById(int $authorId): array
+    {
+        $results = $this->querySimpleExecute('select * from t_author WHERE idAuthor=' . $authorId);
+        $results = $this->formatData($results);
+        return $results[0];
+    }
+
+    /**
+     * Get informations of an editor given its id
+     * @param int $editorId
+     * @return array
+     */
+    function getEditorById(int $editorId): array
+    {
+        $results = $this->querySimpleExecute('select * from t_editor WHERE idEditor=' . $editorId);
+        $results = $this->formatData($results);
+        return $results[0];
+    }
+
+    /**
+     * Get informations of a category given its id
+     * @param int $categoryId
+     * @return array
+     */
+    function getCategoryById(int $categoryId): array
+    {
+        $results = $this->querySimpleExecute('select * from t_category WHERE idCategory=' . $categoryId);
+        $results = $this->formatData($results);
+        return $results[0];
+    }
+
+    /**
      * Get Books based on the id of the user
      * @param $userId
      * @return array
      */
-    function getBooksByUserId($userId): array
+    function getBooksByUserId(int $userId): array
     {
         $result = $this->querySimpleExecute("select * from t_book where idUser = $userId");
         return $this->formatData($result);
     }
 
     /**
-     * Get information of a book given its id
+     * Get informations of a book given its id
      * @param int $bookId
      * @return array
      */
@@ -153,9 +190,21 @@ class Database
      * @param int $bookId
      * @return array
      */
-    function getEvaluationsFromBook(int $bookId): array
+    function getAllEvaluationsFromBook(int $bookId): array
     {
         $results = $this->querySimpleExecute('select * from t_evaluate LEFT OUTER JOIN t_book ON t_evaluate.idBook = t_book.idBook WHERE t_book.idBook=' . $bookId);
+        $results = $this->formatData($results);
+        return $results;
+    }
+
+    /**
+     * Get 3 evaluations of a book given its id
+     * @param int $bookId
+     * @return array
+     */
+    function getSomeEvaluationsFromBook(int $bookId): array
+    {
+        $results = $this->querySimpleExecute('select * from t_evaluate LEFT OUTER JOIN t_book ON t_evaluate.idBook = t_book.idBook WHERE t_book.idBook=' . $bookId . ' LIMIT 3');
         $results = $this->formatData($results);
         return $results;
     }
@@ -264,6 +313,26 @@ class Database
     }
 
     /**
+     * modifie une évaluation de la base de données
+     * @param $idUser
+     * @param $idBook
+     * @param $rating         
+     * @param $remark          
+     */
+    public function updateRating($idBook, $idUser, $rating, $remark){
+        $query = 'UPDATE t_evaluate SET evaNote="' . $rating . '", evaRemark="' . $remark . '" WHERE idBook =' . $idBook . ' AND idUserEvaluer=' . $idUser;
+        $req = $this->querySimpleExecute($query);
+        $this->unsetData($req);
+    }
+
+    public function modifyBookAverageNote($averageNote, $id)
+    {
+        $query = 'UPDATE t_book SET booAverageNotes="' . $averageNote . '" WHERE idBook =' . $id;
+        $req = $this->querySimpleExecute($query);
+        $this->unsetData($req);
+    }
+
+    /**
      * Adds an user to the database
      * @param string $username
      * @param string $password
@@ -274,15 +343,16 @@ class Database
     }
 
     /**
-     * Adds a rating to the database
-     *
-     *
+     * Adds a rating to a book associated with a user
+     * @param int $idBook
+     * @param int $idUser
+     * @param int $rating
+     * @param string $summary
      */
     function addRating($idbook, $idUser, $rating, $summary)
     {
         $this->addDataBis("t_evaluate", ["idBook", "idUserEvaluer", "evaNote", "evaRemark"], [$idbook, $idUser, $rating, $summary]);
     }
-
 
     /**
      * Adds an author to the database

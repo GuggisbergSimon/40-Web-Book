@@ -16,6 +16,7 @@ $displayLoginSection = 'displayLoginSection';
 $title = 'Bibliothèque d\'ouvrages';
 $buttonTitle = 'Accueil';
 $buttonPageName = 'home.php';
+$findAutName = 'findAutName';
 
 //display head
 $view = file_get_contents('../view/head.html');
@@ -42,32 +43,46 @@ ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
-foreach ($database->getTable("t_book") as $details) {
-    $findAutName = 'findAutName';
-    $view = file_get_contents('../view/page/bookCardModal.html');
-    ob_start();
-    eval('?>' . $view);
-    echo ob_get_clean();
+if(isset($_SESSION['isConnected']))
+{
+    foreach ($database->getTable("t_book") as $details) {     
+        $view = file_get_contents('../view/page/bookCardModal.html');
+        ob_start();
+        eval('?>' . $view);
+        echo ob_get_clean();
+    }
 }
 ?>
-    <div class="album py-5 bg-light">
-        <div class="container">
-            <div class="row">
-                <?php
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <?php
+            if(isset($_SESSION['isConnected']))
+            {
                 foreach ($database->getTable("t_book") as $details) {
                     $view = file_get_contents('../view/page/bookCard.html');
                     ob_start();
                     eval('?>' . $view);
                     echo ob_get_clean();
                 }
-                ?>
-            </div>
+            } else {
+                foreach ($database->getTable("t_book") as $details) {
+                    $view = file_get_contents('../view/page/bookCardLogout.html');
+                    ob_start();
+                    eval('?>' . $view);
+                    echo ob_get_clean();
+                }
+            }
+            ?>
         </div>
     </div>
-<?php
+</div>
 
+<?php
 //display footer
 $view = file_get_contents('../view/footer.html');
 ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
+?>
