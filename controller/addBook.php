@@ -36,15 +36,19 @@ if (isset($_POST["logout"])) {
     logout("home.php");
 }
 
-//display homepage
-$view = file_get_contents('../view/page/addBook.html');
-ob_start();
-eval('?>' . $view);
-echo ob_get_clean();
-
 //display main page
 if (isset($_SESSION["isConnected"])) {
-
+    //display form
+    $view = file_get_contents('../view/page/addBook.html');
+    ob_start();
+    eval('?>' . $view);
+    echo ob_get_clean();
+} else {
+    //display forbidden access message
+    $view = file_get_contents('../view/page/forbiddenAccessMessage.html');
+    ob_start();
+    eval('?>' . $view);
+    echo ob_get_clean();
 }
 
 //display footer

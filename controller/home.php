@@ -42,7 +42,7 @@ ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
-foreach ($database->getTableFirstLines("t_book", 3) as $details) {
+foreach ($database->getTableFirstLines("t_book", 5) as $details) {
     $findAutName = 'findAutName';
     $view = file_get_contents('../view/page/bookCardModal.html');
     ob_start();
@@ -54,7 +54,7 @@ foreach ($database->getTableFirstLines("t_book", 3) as $details) {
         <div class="container">
             <div class="row">
                 <?php
-                foreach ($database->getTableFirstLines("t_book", 3) as $details) {
+                foreach ($database->getTableFirstLines("t_book", 5) as $details) {
                     $view = file_get_contents('../view/page/bookCard.html');
                     ob_start();
                     eval('?>' . $view);
