@@ -52,8 +52,8 @@ if (isset($_POST['title']) && !empty($_POST['title'])
 
     $sourcePic = $_FILES['picture']['tmp_name'];
     $sourceExcerpt = $_FILES['excerpt']['tmp_name'];
-    $destinationPic = date("YmdHis") . $_FILES["picture"]["name"];
-    $destinationExcerpt = date("YmdHis") . $_FILES["excerpt"]["name"];
+    $destinationPic = date("YmdHis") . substr($_FILES["picture"]["name"],0,3);
+    $destinationExcerpt = date("YmdHis") . substr($_FILES["excerpt"]["name"],0,3);
     move_uploaded_file($sourcePic, "../userContent/images/" . $destinationPic);
     move_uploaded_file($sourceExcerpt, "../userContent/documents/" . $destinationExcerpt);
 
