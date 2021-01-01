@@ -42,17 +42,16 @@ ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
-//display main page
-if (isset($_SESSION["isConnected"])) {
-    echo display('../view/page/userDetail.html');
-}
-
 if (key_exists('idUser', $_GET)) {
-    echo 'Name : ' . $database->getUsernameByUserId($_GET['idUser']) . '<br>';
+    echo '<div class="container"><br>
+                <h4>Utilisateur : ' . $database->getUsernameByUserId($_GET['idUser']) . '</h4>
+                <h6>Livres ajoutés à la base de données par cette bonne âme</h6>
+                <ul>';
     $books = $database->getBooksByUserId($_GET['idUser']);
     foreach ($books as $book) {
-        echo $book['booTitle'] . '<br>';
+        echo '<li>' . $book['booTitle'] . '</li>';
     }
+    echo '</ul><br></div>';
 }
 
 //display footer
