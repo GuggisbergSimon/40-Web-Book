@@ -1,19 +1,10 @@
--- *********************************************
--- * SQL MySQL generation                      
--- *--------------------------------------------
--- * DB-MAIN version: 11.0.1              
--- * Generator date: Dec  4 2018              
--- * Generation date: Tue Dec  1 09:56:04 2020 
--- * LUN file: F:\UwAmp\www\40-Web-Book\src\Library2.lun 
--- * Schema: MLD/2 
--- ********************************************* 
 
 
 -- Database Section
 -- ________________ 
 
-create database MLD;
-use MLD;
+create database book;
+use book;
 
 
 -- Tables Section
@@ -53,7 +44,7 @@ create table t_editor (
 create table t_evaluate (
      idBook int not null,
      idUser int not null,
-     evaNote int not null,
+     evaNote float(1) not null,
      evaRemark varchar(200) not null,
      constraint ID_t_evaluate_ID primary key (idUser, idBook));
 

@@ -43,9 +43,8 @@ ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
-if(isset($_SESSION['isConnected']))
-{
-    foreach ($database->getTable("t_book") as $details) {     
+if (isset($_SESSION['isConnected'])) {
+    foreach ($database->getTable("t_book") as $details) {
         $view = file_get_contents('../view/page/bookCardModal.html');
         ob_start();
         eval('?>' . $view);
@@ -54,30 +53,55 @@ if(isset($_SESSION['isConnected']))
 }
 ?>
 
-<div class="album py-5 bg-light">
-    <div class="container">
-        <div class="row">
-            <?php
-            if(isset($_SESSION['isConnected']))
-            {
-                foreach ($database->getTable("t_book") as $details) {
-                    $view = file_get_contents('../view/page/bookCard.html');
-                    ob_start();
-                    eval('?>' . $view);
-                    echo ob_get_clean();
+    <div class="album py-5 bg-light">
+        <?php
+        //display category selection menu
+        $view = file_get_contents('../view/page/categorySelection.html');
+        ob_start();
+        eval('?>' . $view);
+        echo ob_get_clean();
+        ?>
+        <div class="container">
+            <div class="row">
+                <?php
+                //display all books
+                if (isset($_SESSION['isConnected'])) {
+                    if (isset($_POST['category']) && $_POST['category'] != 0) {
+                        foreach ($database->getBooksByCategoryId($_POST['category']) as $details) {
+                            $view = file_get_contents('../view/page/bookCard.html');
+                            ob_start();
+                            eval('?>' . $view);
+                            echo ob_get_clean();
+                        }
+                    } else {
+                        foreach ($database->getTable("t_book") as $details) {
+                            $view = file_get_contents('../view/page/bookCard.html');
+                            ob_start();
+                            eval('?>' . $view);
+                            echo ob_get_clean();
+                        }
+                    }
+                } else {
+                    if (isset($_POST['category']) && $_POST['category'] != 0) {
+                        foreach ($database->getBooksByCategoryId($_POST['category']) as $details) {
+                            $view = file_get_contents('../view/page/bookCardLogout.html');
+                            ob_start();
+                            eval('?>' . $view);
+                            echo ob_get_clean();
+                        }
+                    } else {
+                        foreach ($database->getTable("t_book") as $details) {
+                            $view = file_get_contents('../view/page/bookCardLogout.html');
+                            ob_start();
+                            eval('?>' . $view);
+                            echo ob_get_clean();
+                        }
+                    }
                 }
-            } else {
-                foreach ($database->getTable("t_book") as $details) {
-                    $view = file_get_contents('../view/page/bookCardLogout.html');
-                    ob_start();
-                    eval('?>' . $view);
-                    echo ob_get_clean();
-                }
-            }
-            ?>
+                ?>
+            </div>
         </div>
     </div>
-</div>
 
 <?php
 //display footer
