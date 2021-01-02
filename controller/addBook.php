@@ -38,7 +38,7 @@ if (isset($_POST["logout"])) {
 
 //display main page
 if (isset($_SESSION["isConnected"])) {
-    //display form
+    //display form for adding a book
     $categories = $database->getTable("t_category");
 
     $view = file_get_contents('../view/page/addBook.html');
