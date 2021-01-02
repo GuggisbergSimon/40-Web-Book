@@ -174,6 +174,17 @@ class Database
     }
 
     /**
+     * Get Books based on the id of the category
+     * @param $catId
+     * @return array
+     */
+    function getBooksByCategoryId(int $catId): array
+    {
+        $result = $this->querySimpleExecute("select * from t_book where idCategory = $catId");
+        return $this->formatData($result);
+    }
+
+    /**
      * Get informations of a book given its id
      * @param int $bookId
      * @return array
