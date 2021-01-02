@@ -327,10 +327,11 @@ class Database
      * modifie une évaluation de la base de données
      * @param $idUser
      * @param $idBook
-     * @param $rating         
-     * @param $remark          
+     * @param $rating
+     * @param $remark
      */
-    public function updateRating($idBook, $idUser, $rating, $remark){
+    public function updateRating($idBook, $idUser, $rating, $remark)
+    {
         $query = 'UPDATE t_evaluate SET evaNote="' . $rating . '", evaRemark="' . $remark . '" WHERE idBook =' . $idBook . ' AND idUserEvaluer=' . $idUser;
         $req = $this->querySimpleExecute($query);
         $this->unsetData($req);

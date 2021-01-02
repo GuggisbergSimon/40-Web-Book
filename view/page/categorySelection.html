@@ -1,14 +1,21 @@
+<!--
+Authors : Julien Leresche & Simon Guggisberg
+Date : 02.01.2021
+Description : html code for selection of category of books
+-->
 <form class="d-flex justify-content-center" action="booksList.php" method="post">
     <div class="form-group">
         <label for="cat">Catégorie</label>
         <select class="form-control" name="category" id="cat">
             <option value="0">Tout</option>
             <?php foreach($database->getTable("t_category") as $category)
-            { 
-                echo '<option value="' . $category['idCategory'] . '">' . $category['catName'] . '</option>';
+            {
+            echo '
+            <option value="' . $category['idCategory'] . '">' . $category['catName'] . '</option>
+            ';
             }
-            ?>              
-        </select>           
+            ?>
+        </select>
         <input type="submit" class="btn btn-sm btn-primary" value="Trier">
     </div>
 </form>
