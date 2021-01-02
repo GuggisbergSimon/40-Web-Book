@@ -85,8 +85,9 @@ class Database
      */
     function getTable(string $tableName): array
     {
-        $results = $this->querySimpleExecute('select * from ' . $tableName);
-        $results = $this->formatData($results);
+        $req = $this->querySimpleExecute('select * from ' . $tableName);
+        $results = $this->formatData($req);
+        $this->unsetData($req);
         return $results;
     }
 
@@ -98,8 +99,9 @@ class Database
      */
     function getTableFirstLines(string $tableName, int $limit): array
     {
-        $results = $this->querySimpleExecute('select * from ' . $tableName . ' order by idBook desc limit ' . $limit);
-        $results = $this->formatData($results);
+        $req = $this->querySimpleExecute('select * from ' . $tableName . ' order by idBook desc limit ' . $limit);
+        $results = $this->formatData($req);
+        $this->unsetData($req);
         return $results;
     }
 
@@ -110,8 +112,10 @@ class Database
      */
     function getUsernameByUserId($userId): string
     {
-        $result = $this->querySimpleExecute("select usePseudo from t_user where idUser = $userId");
-        return $this->formatData($result)[0]['usePseudo'];
+        $req = $this->querySimpleExecute("select usePseudo from t_user where idUser = $userId");
+        $result = $this->formatData($req)[0]['usePseudo'];
+        $this->unsetData($req);
+        return $result;
     }
 
     /**
@@ -121,8 +125,9 @@ class Database
      */
     function getUserById(int $userId): array
     {
-        $results = $this->querySimpleExecute('select * from t_user WHERE idUser=' . $userId);
-        $results = $this->formatData($results);
+        $req = $this->querySimpleExecute('select * from t_user WHERE idUser=' . $userId);
+        $results = $this->formatData($req);
+        $this->unsetData($req);
         return $results[0];
     }
 
@@ -133,8 +138,9 @@ class Database
      */
     function getAuthorById(int $authorId): array
     {
-        $results = $this->querySimpleExecute('select * from t_author WHERE idAuthor=' . $authorId);
-        $results = $this->formatData($results);
+        $req = $this->querySimpleExecute('select * from t_author WHERE idAuthor=' . $authorId);
+        $results = $this->formatData($req);
+        $this->unsetData($req);
         return $results[0];
     }
 
@@ -145,8 +151,9 @@ class Database
      */
     function getEditorById(int $editorId): array
     {
-        $results = $this->querySimpleExecute('select * from t_editor WHERE idEditor=' . $editorId);
-        $results = $this->formatData($results);
+        $req = $this->querySimpleExecute('select * from t_editor WHERE idEditor=' . $editorId);
+        $results = $this->formatData($req);
+        $this->unsetData($req);
         return $results[0];
     }
 
@@ -157,8 +164,9 @@ class Database
      */
     function getCategoryById(int $categoryId): array
     {
-        $results = $this->querySimpleExecute('select * from t_category WHERE idCategory=' . $categoryId);
-        $results = $this->formatData($results);
+        $req = $this->querySimpleExecute('select * from t_category WHERE idCategory=' . $categoryId);
+        $results = $this->formatData($req);
+        $this->unsetData($req);
         return $results[0];
     }
 
@@ -169,8 +177,10 @@ class Database
      */
     function getBooksByUserId(int $userId): array
     {
-        $result = $this->querySimpleExecute("select * from t_book where idUser = $userId");
-        return $this->formatData($result);
+        $req = $this->querySimpleExecute("select * from t_book where idUser = $userId");
+        $result = $this->formatData($req);
+        $this->unsetData($req);
+        return $result;
     }
 
     /**
@@ -180,8 +190,10 @@ class Database
      */
     function getBooksByCategoryId(int $catId): array
     {
-        $result = $this->querySimpleExecute("select * from t_book where idCategory = $catId");
-        return $this->formatData($result);
+        $req = $this->querySimpleExecute("select * from t_book where idCategory = $catId");
+        $result = $this->formatData($req);
+        $this->unsetData($req);
+        return $result;
     }
 
     /**
@@ -191,8 +203,8 @@ class Database
      */
     function getBookById(int $bookId): array
     {
-        $results = $this->querySimpleExecute('select * from t_book WHERE idBook=' . $bookId);
-        $results = $this->formatData($results);
+        $req = $this->querySimpleExecute('select * from t_book WHERE idBook=' . $bookId);
+        $results = $this->formatData($req);
         return $results[0];
     }
 
@@ -203,8 +215,9 @@ class Database
      */
     function getAllEvaluationsFromBook(int $bookId): array
     {
-        $results = $this->querySimpleExecute('select * from t_evaluate LEFT OUTER JOIN t_book ON t_evaluate.idBook = t_book.idBook WHERE t_book.idBook=' . $bookId);
-        $results = $this->formatData($results);
+        $req = $this->querySimpleExecute('select * from t_evaluate LEFT OUTER JOIN t_book ON t_evaluate.idBook = t_book.idBook WHERE t_book.idBook=' . $bookId);
+        $results = $this->formatData($req);
+        $this->unsetData($req);
         return $results;
     }
 
@@ -215,8 +228,9 @@ class Database
      */
     function getSomeEvaluationsFromBook(int $bookId): array
     {
-        $results = $this->querySimpleExecute('select * from t_evaluate LEFT OUTER JOIN t_book ON t_evaluate.idBook = t_book.idBook WHERE t_book.idBook=' . $bookId . ' LIMIT 3');
-        $results = $this->formatData($results);
+        $req = $this->querySimpleExecute('select * from t_evaluate LEFT OUTER JOIN t_book ON t_evaluate.idBook = t_book.idBook WHERE t_book.idBook=' . $bookId . ' LIMIT 3');
+        $results = $this->formatData($req);
+        $this->unsetData($req);
         return $results;
     }
 
@@ -233,8 +247,9 @@ class Database
      */
     function dataExistsAt($value, $table, $column): int
     {
-        $results = $this->querySimpleExecute('select * from ' . $table);
-        $results = $this->formatData($results);
+        $req = $this->querySimpleExecute('select * from ' . $table);
+        $results = $this->formatData($req);
+        $this->unsetData($req);
 
         foreach ($results as $result) {
             if ($result[$column] == $value) {
@@ -262,8 +277,9 @@ class Database
      */
     function authorExistsAt($name, $surname): int
     {
-        $results = $this->querySimpleExecute('select * from t_author');
-        $results = $this->formatData($results);
+        $req = $this->querySimpleExecute('select * from t_author');
+        $results = $this->formatData($req);
+        $this->unsetData($req);
 
         foreach ($results as $result) {
             if (($result['autName'] == $name) && ($result['autSurname'] == $surname)) {
