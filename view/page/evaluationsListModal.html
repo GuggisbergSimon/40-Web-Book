@@ -1,4 +1,5 @@
-<div class="modal fade" id="ratingList" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="ratingList" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,27 +12,33 @@
                 <div class="list-group" id="myList" role="tablist">
                     <?php
                         if(count($evaluations) > 0)
-                        {
-                            foreach($evaluations as $evaluation)
-                            {
-                                echo '<a class="list-group-item list-group-item-action" data-toggle="list" href="#id' . $evaluation["idUserEvaluer"] . '" role="tab">' . $database->getUserById($evaluation["idUserEvaluer"])["usePseudo"] . ' : ' . $evaluation["evaNote"] . '/5</a>';
-                            }
-                        }
-                        else
-                        {
-                            echo 'Aucune appréciations';
-                        }
+                    {
+                    foreach($evaluations as $evaluation)
+                    {
+                    echo '<a class="list-group-item list-group-item-action" data-toggle="list"
+                             href="#id' . $evaluation[" idUserEvaluer"] . '" role="tab">' .
+                    $database->getUserById($evaluation["idUserEvaluer"])["usePseudo"] . ' : ' . $evaluation["evaNote"] .
+                    '/5</a>';
+                    }
+                    }
+                    else
+                    {
+                    echo 'Aucune appréciations';
+                    }
                     ?>
                 </div>
                 <div class="tab-content no-gutters border rounded">
                     <?php
                         foreach($evaluations as $evaluation)
                         {
-                            echo '<div class="tab-pane overflow-auto" id="id' . $evaluation["idUserEvaluer"] . '" role="tabpanel">' . $evaluation["evaRemark"] . '</div>';
-                        }
-                    ?> 
+                            echo '<div class="tab-pane overflow-auto" id="id' . $evaluation["idUserEvaluer"] . '" role="tabpanel">
+                    ' . $evaluation["evaRemark"] . '
                 </div>
+                ';
+                }
+                ?>
             </div>
         </div>
     </div>
+</div>
 </div>

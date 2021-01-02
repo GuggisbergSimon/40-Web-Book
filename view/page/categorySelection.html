@@ -4,11 +4,13 @@
         <select class="form-control" name="category" id="cat">
             <option value="0">Tout</option>
             <?php foreach($database->getTable("t_category") as $category)
-            { 
-                echo '<option value="' . $category['idCategory'] . '">' . $category['catName'] . '</option>';
+            {
+            echo '
+            <option value="' . $category['idCategory'] . '">' . $category['catName'] . '</option>
+            ';
             }
-            ?>              
-        </select>           
+            ?>
+        </select>
         <input type="submit" class="btn btn-sm btn-primary" value="Trier">
     </div>
 </form>
