@@ -17,7 +17,7 @@ $evaluations = $database->getAllEvaluationsFromBook($_GET["idBook"]);
 
 //Check who's the connected user and if the user already rated the book
 $alreadyRated = 0;
-$activeUser;
+$activeUser = [];
 foreach ($users as $user) {
     if ($user["usePseudo"] == $_SESSION["username"]) {
         $activeUser = $user;
@@ -40,5 +40,5 @@ if (isset($_POST["addRating"])) {
     $database->modifyBookAverageNote(computeAverageNote($evaluations), $_GET["idBook"]);
 }
 
-header("location: rating.php?idBook=" . $_GET["idBook"])
+header("location: rating.php?idBook=" . $_GET["idBook"]);
 unset($database);
