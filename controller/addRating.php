@@ -6,8 +6,8 @@
  * Description : page handling various checks after a rating has been added
  */
 
-include '../model/Database.php';
-include 'functions.php';
+include_once '../model/Database.php';
+include_once 'functions.php';
 $database = new Database();
 session_start();
 
