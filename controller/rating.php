@@ -10,6 +10,8 @@ include 'functions.php';
 include '../model/Database.php';
 session_start();
 $database = new Database();
+
+//evaluations and average note from the current book
 $selectedEvaluations = $database->getSomeEvaluationsFromBook($_GET["idBook"]);
 $evaluations = $database->getAllEvaluationsFromBook($_GET["idBook"]);
 $averageNote = computeAverageNote($evaluations);
@@ -33,6 +35,7 @@ ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
+//check if login/logout functions should be call
 if (isset($_POST["login"])) {
     login("rating.php?idBook=" . $_GET["idBook"], $database->getTable("t_user"));
 }

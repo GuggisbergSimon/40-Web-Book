@@ -12,8 +12,7 @@ Description : html code for viewing evaluations per book
                          alt="Couverture du livre">
                     <div class="card-body">
                         <p class="card-text"> Titre : <?php echo $selectedBook['booTitle'] ?></p>
-                        <p class="card-text"> Auteur : <?php echo findAutName($database->
-                            getAuthorById($selectedBook['idAuthor'])) ?></p>
+                        <p class="card-text"> Auteur : <?php echo findAutName($database->getAuthorById($selectedBook['idAuthor'])) ?></p>
                         <p class="card-text"> Année : <?php echo $selectedBook['booYearEdited'] ?></p>
                     </div>
                 </div>
@@ -40,7 +39,7 @@ Description : html code for viewing evaluations per book
                             foreach($selectedEvaluations as $evaluation)
                             {
                             echo '<a class="list-group-item list-group-item-action" data-toggle="list"
-                                     href="#idNumber' . $evaluation[" idUserEvaluer"] . '" role="tab">' .
+                                     href="#idNumber' . $evaluation["idUserEvaluer"] . '" role="tab">' .
                             $database->getUserById($evaluation["idUserEvaluer"])["usePseudo"] . ' : ' .
                             $evaluation["evaNote"] . '/5</a>';
                             }

@@ -94,7 +94,7 @@ class Database
     /**
      * Read a table and return an array with the first n table's informations
      * @param string $tableName
-     * @param int
+     * @param int $limit
      * @return array
      */
     function getTableFirstLines(string $tableName, int $limit): array
@@ -205,6 +205,7 @@ class Database
     {
         $req = $this->querySimpleExecute('select * from t_book WHERE idBook=' . $bookId);
         $results = $this->formatData($req);
+        $this->unsetData($req);
         return $results[0];
     }
 
@@ -326,21 +327,27 @@ class Database
 
         $id = 'id' . ucfirst(substr($table, 2, strlen($table)));
         $this->querySimpleExecute('insert into ' . $table . ' ' . $this->mergeStrings($columns, '') . ' values ' . $this->mergeStrings($values, '\''));
-        $results = $this->querySimpleExecute("select max($id) from " . $table);
-        $results = $this->formatData($results);
+        $req = $this->querySimpleExecute("select max($id) from " . $table);
+        $results = $this->formatData($req);
+        $this->unsetData($req);
         return (int)($results[0]["max($id)"]);
     }
 
+    /**
+     * Adds some data to the database (without returning ID)
+     * @param string $table
+     * @param string[] $columns
+     * @param string[] $values
+     */
     function addDataBis($table, $columns, $values)
     {
-        echo "added new entry to $table " . var_dump($columns) . " " . var_dump($values);
         $query = 'insert into ' . $table . ' ' . $this->mergeStrings($columns, '') . ' values ' . $this->mergeStrings($values, '\'');
-        echo $query;
-        $this->querySimpleExecute('insert into ' . $table . ' ' . $this->mergeStrings($columns, '') . ' values ' . $this->mergeStrings($values, '\''));
+        $req = $this->querySimpleExecute('insert into ' . $table . ' ' . $this->mergeStrings($columns, '') . ' values ' . $this->mergeStrings($values, '\''));
+        $this->unsetData($req);
     }
 
     /**
-     * modifie une évaluation de la base de données
+     * modify an evaluation in the database
      * @param $idUser
      * @param $idBook
      * @param $rating
@@ -353,6 +360,11 @@ class Database
         $this->unsetData($req);
     }
 
+    /**
+     * modify a book average note by its ID
+     * @param $averageNote
+     * @param $id
+     */
     public function modifyBookAverageNote($averageNote, $id)
     {
         $query = 'UPDATE t_book SET booAverageNotes="' . $averageNote . '" WHERE idBook =' . $id;

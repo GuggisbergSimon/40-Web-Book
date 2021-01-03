@@ -29,6 +29,10 @@ function findAutName(array $authorInformations): string
     return $authorInformations["autName"] . " " . $authorInformations["autSurname"];
 }
 
+/**
+ * Display the number of stars a book should have given its average note
+ * @param float $averageNote
+ */
 function displayRatingStars($averageNote)
 {
     if ($averageNote > 0) {
@@ -48,6 +52,9 @@ function displayRatingStars($averageNote)
     }
 }
 
+/**
+ * Display the login/logout section
+ */
 function displayLoginSection()
 {
     if (isset($_SESSION["isConnected"])) {
@@ -70,6 +77,11 @@ function displayLoginSection()
     }
 }
 
+/**
+ * Compute and return the average note of a book 
+ * @param array $evaluations
+ * @return float
+ */
 function computeAverageNote(array $evaluations)
 {
     $averageNote = 0;
@@ -82,6 +94,11 @@ function computeAverageNote(array $evaluations)
     return round($averageNote, 1);
 }
 
+/**
+ * Connect the user to the website and redirect him on the specified page
+ * @param string $pageName
+ * @param $users
+ */
 function login($pageName, $users)
 {
     foreach ($users as $user)
@@ -92,6 +109,10 @@ function login($pageName, $users)
         }
 }
 
+/**
+ * Disconnect the user from the website and redirect him on the specified page
+ * @param string $pageName
+ */
 function logout($pageName)
 {
     session_destroy();

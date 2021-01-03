@@ -51,7 +51,7 @@ create table t_evaluate (
 create table t_user (
      idUser int not null auto_increment,
      usePseudo varchar(50) not null,
-     usePassword varchar(50) not null,
+     usePassword varchar(200) not null,
      constraint ID_t_user_ID primary key (idUser));
 
 
