@@ -25,7 +25,7 @@ if ($database->userExistsAt($username) < 0) {
 $patternPictures = '/^.*\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF|bmp|BMP)$/';
 $patternExcerpt = '/^.*\.(pdf|PDF)$/';
 
-//ugly ass long condition but hey, if it works, it works
+// Conditions
 if (isset($_POST['title']) && !empty($_POST['title'])
     && isset($_POST['category']) && ($_POST['category'] != 'Choose')
     && isset($_POST['numberPages']) && ($_POST['numberPages'] > 0)
@@ -62,6 +62,5 @@ if (isset($_POST['title']) && !empty($_POST['title'])
 
     header("Location: home.php");
 } else {
-    //todo put a correct header and an error message uwu
     header("Location: addBook.php");
 }

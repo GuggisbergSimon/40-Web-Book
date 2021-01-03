@@ -11,8 +11,11 @@ include 'functions.php';
 $database = new Database();
 session_start();
 
+//Get users and evaluations
 $users = $database->getTable("t_user");
 $evaluations = $database->getAllEvaluationsFromBook($_GET["idBook"]);
+
+//Check who's the connected user and if the user already rated the book
 $alreadyRated = 0;
 $activeUser;
 foreach ($users as $user) {
@@ -26,6 +29,7 @@ foreach ($evaluations as $evaluation) {
     }
 }
 
+//Add or update a rating in the database and modify the avarage note
 if (isset($_POST["addRating"])) {
     if ($alreadyRated == 0) {
         $database->addRating($_GET["idBook"], $activeUser["idUser"], $_POST["note"], $_POST["summary"]);

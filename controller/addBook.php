@@ -29,6 +29,7 @@ ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
+//check if login/logout functions should be call
 if (isset($_POST["login"])) {
     login("home.php", $database->getTable("t_user"));
 }
