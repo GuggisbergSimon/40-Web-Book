@@ -86,4 +86,5 @@ $view = file_get_contents('../view/footer.html');
 ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
+unset($database);
 ?>

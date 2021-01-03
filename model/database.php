@@ -342,8 +342,7 @@ class Database
     function addDataBis($table, $columns, $values)
     {
         $query = 'insert into ' . $table . ' ' . $this->mergeStrings($columns, '') . ' values ' . $this->mergeStrings($values, '\'');
-        $req = $this->querySimpleExecute('insert into ' . $table . ' ' . $this->mergeStrings($columns, '') . ' values ' . $this->mergeStrings($values, '\''));
-        $this->unsetData($req);
+        $req = $this->querySimpleExecute($query);
     }
 
     /**
@@ -355,9 +354,8 @@ class Database
      */
     public function updateRating($idBook, $idUser, $rating, $remark)
     {
-        $query = 'UPDATE t_evaluate SET evaNote="' . $rating . '", evaRemark="' . $remark . '" WHERE idBook =' . $idBook . ' AND idUserEvaluer=' . $idUser;
+        $query = 'UPDATE t_evaluate SET evaNote="' . $rating . '", evaRemark="' . $remark . '" WHERE idBook =' . $idBook . ' AND idUser=' . $idUser;
         $req = $this->querySimpleExecute($query);
-        $this->unsetData($req);
     }
 
     /**
@@ -369,7 +367,6 @@ class Database
     {
         $query = 'UPDATE t_book SET booAverageNotes="' . $averageNote . '" WHERE idBook =' . $id;
         $req = $this->querySimpleExecute($query);
-        $this->unsetData($req);
     }
 
     /**
@@ -384,14 +381,14 @@ class Database
 
     /**
      * Adds a rating to a book associated with a user
-     * @param int $idBook
+     * @param $idBook
      * @param int $idUser
      * @param int $rating
      * @param string $summary
      */
-    function addRating($idbook, $idUser, $rating, $summary)
+    function addRating($idBook, $idUser, $rating, $summary)
     {
-        $this->addDataBis("t_evaluate", ["idBook", "idUserEvaluer", "evaNote", "evaRemark"], [$idbook, $idUser, $rating, $summary]);
+        $this->addDataBis("t_evaluate", ["idBook", "idUser", "evaNote", "evaRemark"], [$idBook, $idUser, $rating, $summary]);
     }
 
     /**
