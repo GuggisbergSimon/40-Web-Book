@@ -10,18 +10,8 @@ include '../model/Database.php';
 session_start();
 
 //Example of a code to create a basic user root - root for data manipulation
-$servername = 'localhost';
-$username = 'root';
-$password = 'root';
 
 $database = new Database();
-if ($database->userExistsAt($username) < 0) {
-    $database->addUser($username, $password);
-    echo "created user root";
-} else {
-    echo "user root already existing, creation aborted";
-}
-
 $patternPictures = '/^.*\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF|bmp|BMP)$/';
 $patternExcerpt = '/^.*\.(pdf|PDF)$/';
 
