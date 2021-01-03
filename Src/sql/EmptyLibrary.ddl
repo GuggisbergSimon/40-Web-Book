@@ -1,6 +1,5 @@
 
 
-
 -- Database Section
 -- ________________ 
 
@@ -45,13 +44,14 @@ create table t_editor (
 create table t_evaluate (
      idBook int not null,
      idUser int not null,
-     evaNote int not null,
+     evaNote float(1) not null,
+     evaRemark varchar(200) not null,
      constraint ID_t_evaluate_ID primary key (idUser, idBook));
 
 create table t_user (
      idUser int not null auto_increment,
      usePseudo varchar(50) not null,
-     usePassword varchar(50) not null,
+     usePassword varchar(200) not null,
      constraint ID_t_user_ID primary key (idUser));
 
 
@@ -129,3 +129,12 @@ create index FKt_e_t_b_IND
 create unique index ID_t_user_IND
      on t_user (idUser);
 
+insert into t_category (catName) values ('Manga');
+
+insert into t_category (catName) values ('Livre');
+
+insert into t_category (catName) values ('BD');
+
+insert into t_category (catName) values ('Comic');
+
+insert into t_user (usePseudo,usePassword) values ('paul','$2y$10$UqpPCefjmclTg7X7VCr/Ke/n3o58d9VJM50DWqtrIXp8XJD3R4/8G');
