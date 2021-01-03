@@ -6,8 +6,8 @@
  * Description : Main landing page of the website, 5 books are shown
  */
 
-include 'functions.php';
-include '../model/Database.php';
+include_once 'functions.php';
+include_once '../model/Database.php';
 session_start();
 $database = new Database();
 

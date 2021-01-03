@@ -6,7 +6,7 @@
  * Description : page handling various checks after a book has been added
  */
 
-include '../model/Database.php';
+include_once '../model/Database.php';
 session_start();
 
 //Example of a code to create a basic user root - root for data manipulation
@@ -50,8 +50,7 @@ if (isset($_POST['title']) && !empty($_POST['title'])
     $idUser = $database->userExistsAt($_SESSION['username']);
     $database->addBook($_POST['title'], $_POST['numberPages'], $destinationExcerpt, $_POST['summary'], $_POST['year'], $destinationPic, $idAuthor, $idUser, $idEditor, $idCategory);
 
-    header("Location: home.php");
+    header("location: home.php");
 } else {
-
-    header("Location: addBook.php");
+    header("location: addBook.php");
 }
