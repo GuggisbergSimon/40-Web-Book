@@ -52,6 +52,6 @@ if (isset($_POST['title']) && !empty($_POST['title'])
 
     header("Location: home.php");
 } else {
+
     header("Location: addBook.php");
 }
-unset($database);
