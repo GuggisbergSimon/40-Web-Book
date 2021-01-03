@@ -31,29 +31,38 @@ echo ob_get_clean();
 
 //check if login/logout functions should be call
 if (isset($_POST["login"])) {
-    login("#.php", $database->getTable("t_user"));
+    login("home.php", $database->getTable("t_user"));
 }
 if (isset($_POST["logout"])) {
-    logout("#.php");
+    logout("home.php");
 }
 
-//display homepage
-$view = file_get_contents('../view/page/home.html');
-ob_start();
-eval('?>' . $view);
-echo ob_get_clean();
+if(isset($_SESSION['isConnected']))
+{
+    //display homepage
+    $view = file_get_contents('../view/page/home.html');
+    ob_start();
+    eval('?>' . $view);
+    echo ob_get_clean();
 
-//display the list of books added by the user
-if (key_exists('idUser', $_GET)) {
-    echo '<div class="container"><br>
-                <h4>Utilisateur : ' . $database->getUsernameByUserId($_GET['idUser']) . '</h4>
-                <h6>Livres ajoutés à la base de données par cette bonne âme</h6>
-                <ul>';
-    $books = $database->getBooksByUserId($_GET['idUser']);
-    foreach ($books as $book) {
-        echo '<li>' . $book['booTitle'] . '</li>';
+    //display the list of books added by the user
+    if (key_exists('idUser', $_GET)) {
+        echo '<div class="container"><br>
+                    <h4>Utilisateur : ' . $database->getUsernameByUserId($_GET['idUser']) . '</h4>
+                    <h6>Livres ajoutés à la base de données par cette bonne âme</h6>
+                    <ul>';
+        $books = $database->getBooksByUserId($_GET['idUser']);
+        foreach ($books as $book) {
+            echo '<li>' . $book['booTitle'] . '</li>';
+        }
+        echo '</ul><br></div>';
     }
-    echo '</ul><br></div>';
+} else {
+    //display forbidden access message
+    $view = file_get_contents('../view/page/forbiddenAccessMessage.html');
+    ob_start();
+    eval('?>' . $view);
+    echo ob_get_clean();
 }
 
 //display footer
