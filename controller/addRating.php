@@ -17,19 +17,19 @@ $evaluations = $database->getAllEvaluationsFromBook($_GET["idBook"]);
 
 //Check who's the connected user and if the user already rated the book
 $alreadyRated = 0;
-$activeUser;
+$activeUser = [];
 foreach ($users as $user) {
     if ($user["usePseudo"] == $_SESSION["username"]) {
         $activeUser = $user;
     }
 }
 foreach ($evaluations as $evaluation) {
-    if ($evaluation["idUserEvaluer"] == $activeUser["idUser"]) {
+    if ($evaluation["idUser"] == $activeUser["idUser"]) {
         $alreadyRated = 1;
     }
 }
 
-//Add or update a rating in the database and modify the avarage note
+//Add or update a rating in the database and modify the average note
 if (isset($_POST["addRating"])) {
     if ($alreadyRated == 0) {
         $database->addRating($_GET["idBook"], $activeUser["idUser"], $_POST["note"], $_POST["summary"]);
@@ -40,5 +40,4 @@ if (isset($_POST["addRating"])) {
     $database->modifyBookAverageNote(computeAverageNote($evaluations), $_GET["idBook"]);
 }
 
-header("location: rating.php?idBook=" . $_GET["idBook"])
-?>
+header("Location: rating.php?idBook=" . $_GET["idBook"]);
