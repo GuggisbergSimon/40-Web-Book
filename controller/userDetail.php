@@ -6,8 +6,8 @@
  * Description : Page showing all the books a user has added
  */
 
-include 'functions.php';
-include '../model/Database.php';
+include_once 'functions.php';
+include_once '../model/Database.php';
 session_start();
 $database = new Database();
 

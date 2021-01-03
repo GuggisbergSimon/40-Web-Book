@@ -1,0 +1,20 @@
+<!--
+Authors : Julien Leresche & Simon Guggisberg
+Date : 02.01.2021
+Description : html code for a book card
+-->
+<div class="col-md-4">
+    <div class="card mb-4 shadow-sm">
+        <img src="../userContent/images/<?php echo $details['booCoverLink'] ?>" alt="Couverture du livre">
+        <div class="card-body">
+            <p class="card-text"> Titre : <?php echo $details['booTitle'] ?></p>
+            <p class="card-text"> Auteur : <?php echo $findAutName($database->getAuthorById($details['idAuthor'])) ?></p>
+            <p class="card-text"> Ajouté par : <a href="<?php echo "userDetail.php?idUser=" . $details['idUser'] ?>"><?php echo $database->getUsernameByUserId($details['idUser']) ?></a></p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#id<?php echo $details['idBook'] ?>">Détails ouvrage</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
