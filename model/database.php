@@ -94,7 +94,7 @@ class Database
     /**
      * Read a table and return an array with the first n table's informations
      * @param string $tableName
-     * @param int
+     * @param int $limit
      * @return array
      */
     function getTableFirstLines(string $tableName, int $limit): array
