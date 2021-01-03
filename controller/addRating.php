@@ -41,4 +41,4 @@ if (isset($_POST["addRating"])) {
 }
 
 header("location: rating.php?idBook=" . $_GET["idBook"])
-?>
+unset($database);

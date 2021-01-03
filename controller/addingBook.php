@@ -64,3 +64,4 @@ if (isset($_POST['title']) && !empty($_POST['title'])
 } else {
     header("Location: addBook.php");
 }
+unset($database);
