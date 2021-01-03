@@ -30,6 +30,7 @@ ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
+//check if login/logout functions should be call
 if (isset($_POST["login"])) {
     login("home.php", $database->getTable("t_user"));
 }
@@ -43,6 +44,7 @@ ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
+//display modal for book's details
 if (isset($_SESSION['isConnected'])) {
     foreach ($database->getTableFirstLines("t_book", 5) as $details) {
         $view = file_get_contents('../view/page/bookCardModal.html');
@@ -53,29 +55,30 @@ if (isset($_SESSION['isConnected'])) {
 }
 ?>
 
-    <div class="album py-5 bg-light">
-        <div class="container">
-            <div class="row">
-                <?php
-                if (isset($_SESSION['isConnected'])) {
-                    foreach ($database->getTableFirstLines("t_book", 5) as $details) {
-                        $view = file_get_contents('../view/page/bookCard.html');
-                        ob_start();
-                        eval('?>' . $view);
-                        echo ob_get_clean();
-                    }
-                } else {
-                    foreach ($database->getTableFirstLines("t_book", 5) as $details) {
-                        $view = file_get_contents('../view/page/bookCardLogout.html');
-                        ob_start();
-                        eval('?>' . $view);
-                        echo ob_get_clean();
-                    }
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <?php
+            //display the first 5 books with/without details depending if the user is login/logout
+            if (isset($_SESSION['isConnected'])) {
+                foreach ($database->getTableFirstLines("t_book", 5) as $details) {
+                    $view = file_get_contents('../view/page/bookCard.html');
+                    ob_start();
+                    eval('?>' . $view);
+                    echo ob_get_clean();
                 }
-                ?>
-            </div>
+            } else {
+                foreach ($database->getTableFirstLines("t_book", 5) as $details) {
+                    $view = file_get_contents('../view/page/bookCardLogout.html');
+                    ob_start();
+                    eval('?>' . $view);
+                    echo ob_get_clean();
+                }
+            }
+            ?>
         </div>
     </div>
+</div>
 
 <?php
 //display footer

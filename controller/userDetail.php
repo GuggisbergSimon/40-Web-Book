@@ -29,6 +29,7 @@ ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
+//check if login/logout functions should be call
 if (isset($_POST["login"])) {
     login("#.php", $database->getTable("t_user"));
 }
@@ -42,6 +43,7 @@ ob_start();
 eval('?>' . $view);
 echo ob_get_clean();
 
+//display the list of books added by the user
 if (key_exists('idUser', $_GET)) {
     echo '<div class="container"><br>
                 <h4>Utilisateur : ' . $database->getUsernameByUserId($_GET['idUser']) . '</h4>
