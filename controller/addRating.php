@@ -24,7 +24,7 @@ foreach ($users as $user) {
     }
 }
 foreach ($evaluations as $evaluation) {
-    if ($evaluation["idUser"] == $activeUser["idUser"]) {
+    if ($evaluation["idUserEvaluer"] == $activeUser["idUser"]) {
         $alreadyRated = 1;
     }
 }

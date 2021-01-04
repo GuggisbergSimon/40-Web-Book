@@ -386,7 +386,7 @@ class Database
      */
     function addRating($idBook, $idUser, $rating, $summary)
     {
-        $this->addDataBis("t_evaluate", ["idBook", "idUser", "evaNote", "evaRemark"], [$idBook, $idUser, $rating, $summary]);
+        $this->addDataBis("t_evaluate", ["idBook", "idUserEvaluer", "evaNote", "evaRemark"], [$idBook, $idUser, $rating, $summary]);
     }
 
     /**
