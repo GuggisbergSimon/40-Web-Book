@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Lun 04 Janvier 2021 à 13:26
+-- Généré le :  Lun 04 Janvier 2021 à 14:05
 -- Version du serveur :  5.7.11
 -- Version de PHP :  7.0.3
 
@@ -102,7 +102,7 @@ INSERT INTO `t_book` (`idBook`, `booTitle`, `booNbrPages`, `booExcerptLink`, `bo
 (15, 'La Jeunesse de Picsou', 288, '20210104123544Doc', 'Non, Picsou n’a pas toujours été un vieux canard pingre au coffre rempli de dollars… ', 2012, -1, '20210104123544978', 15, 2, 11, 4),
 (16, 'Les aventures de Tintin au pays des soviets ', 140, '20210104124437Doc', 'Le 10 janvier 1929, un jeune reporter fait son apparition dans Le Petit Vingtième, le supplément pour enfants du quotidien belge Le XXe siècle. Son nom ? Tintin.', 2000, -1, '20210104124437aaa', 16, 2, 8, 3),
 (17, 'Le Nouveau Testament commenté et illustré', 594, '20210104130616Doc', 'Le nouveau Testament constitue la deuxième partie de la Bible chrétienne, rédigée au cours du premier siècle de notre ère.', 2016, 4, '20210104130616sgs', 17, 1, 12, 2),
-(18, 'Le vrai goût des tomates mûres', 351, '20210104131014Doc', 'L\'avenir ne pourra s\'écrire qu\'en rebâtissant les bases d\'une société qui s\'effrite. Une société lézardée par l\'argent roi, la destruction aveugle de la nature, de nos rêves, de nos enthousiasmes.', 2016, 1.5, '20210104131014aj.', 18, 1, 13, 2),
+(18, 'Le vrai goût des tomates mûres', 351, '20210104131014Doc', 'L\'avenir ne pourra s\'écrire qu\'en rebâtissant les bases d\'une société qui s\'effrite. Une société lézardée par l\'argent roi, la destruction aveugle de la nature, de nos rêves, de nos enthousiasmes.', 2016, 1.3, '20210104131014aj.', 18, 1, 13, 2),
 (19, 'L\'art invisible', 222, '20210104131327Doc', 'L\'Art invisible est l\'ouvrage théorique de référence sur la bande dessinée. Salué par les plus grands noms, Scott McCloud a été le premier à formaliser la bande dessinée en tant que média.', 2008, -1, '20210104131327abo', 19, 1, 14, 3);
 
 -- --------------------------------------------------------
@@ -165,7 +165,7 @@ INSERT INTO `t_editor` (`idEditor`, `ediName`) VALUES
 
 CREATE TABLE `t_evaluate` (
   `idBook` int(11) NOT NULL,
-  `idUser` int(11) NOT NULL,
+  `idUserEvaluer` int(11) NOT NULL,
   `evaNote` float NOT NULL,
   `evaRemark` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -174,11 +174,12 @@ CREATE TABLE `t_evaluate` (
 -- Contenu de la table `t_evaluate`
 --
 
-INSERT INTO `t_evaluate` (`idBook`, `idUser`, `evaNote`, `evaRemark`) VALUES
+INSERT INTO `t_evaluate` (`idBook`, `idUserEvaluer`, `evaNote`, `evaRemark`) VALUES
 (1, 1, 5, 'J\'ai été subjugué par cette oeuvre de A à Z, mon point de vue sur la vie à changé...'),
 (2, 1, 4.5, 'Très instructif et pédagogique !'),
 (17, 1, 4, 'Mon livre de chevet ! Je ne manque jamais d\'en lire une page le soir !'),
-(18, 1, 1.5, 'Ce torchon ne mérite l\'attention de personne. Bon pour la cheminée...');
+(18, 1, 1.5, 'Ce torchon ne mérite l\'attention de personne. Bon pour la cheminée...'),
+(18, 2, 1, 'J\'ai vomi en lisant ce tas d\'immondices');
 
 -- --------------------------------------------------------
 
@@ -240,8 +241,8 @@ ALTER TABLE `t_editor`
 -- Index pour la table `t_evaluate`
 --
 ALTER TABLE `t_evaluate`
-  ADD PRIMARY KEY (`idUser`,`idBook`),
-  ADD UNIQUE KEY `ID_t_evaluate_IND` (`idUser`,`idBook`),
+  ADD PRIMARY KEY (`idUserEvaluer`,`idBook`),
+  ADD UNIQUE KEY `ID_t_evaluate_IND` (`idUserEvaluer`,`idBook`),
   ADD KEY `FKt_e_t_b_IND` (`idBook`);
 
 --
@@ -298,7 +299,7 @@ ALTER TABLE `t_book`
 --
 ALTER TABLE `t_evaluate`
   ADD CONSTRAINT `FKt_e_t_b_FK` FOREIGN KEY (`idBook`) REFERENCES `t_book` (`idBook`),
-  ADD CONSTRAINT `FKt_e_t_u` FOREIGN KEY (`idUser`) REFERENCES `t_user` (`idUser`);
+  ADD CONSTRAINT `FKt_e_t_u` FOREIGN KEY (`idUserEvaluer`) REFERENCES `t_user` (`idUser`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
