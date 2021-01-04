@@ -352,7 +352,7 @@ class Database
      */
     public function updateRating($idBook, $idUser, $rating, $remark)
     {
-        $query = 'UPDATE t_evaluate SET evaNote="' . $rating . '", evaRemark="' . $remark . '" WHERE idBook =' . $idBook . ' AND idUser=' . $idUser;
+        $query = 'UPDATE t_evaluate SET evaNote="' . $rating . '", evaRemark="' . $remark . '" WHERE idBook =' . $idBook . ' AND idUserEvaluer=' . $idUser;
         $req = $this->querySimpleExecute($query);
     }
 
@@ -386,7 +386,7 @@ class Database
      */
     function addRating($idBook, $idUser, $rating, $summary)
     {
-        $this->addDataBis("t_evaluate", ["idBook", "idUser", "evaNote", "evaRemark"], [$idBook, $idUser, $rating, $summary]);
+        $this->addDataBis("t_evaluate", ["idBook", "idUserEvaluer", "evaNote", "evaRemark"], [$idBook, $idUser, $rating, $summary]);
     }
 
     /**
